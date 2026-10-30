@@ -22,7 +22,7 @@ SELECT * FROM ekpo
   WHERE ebeln = @lv_ebeln.
 
 LOOP AT lt_ekko INTO DATA(ls_ekko).
-  MODIFY lt_ekko FROM ls_ekko.
+  MODIFY lt_ekko FROM ls_ekko INDEX 1.  " positioned write -> fires MODIFY_INSERT_IN_LOOP
   COMMIT WORK.
 ENDLOOP.
 
