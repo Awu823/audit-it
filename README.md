@@ -2,6 +2,13 @@
 
 把分散的 SAP/ABAP 知识整理为**可复用**的 Skill 集合：**1 个知识型 skill + 2 个执行型 skill**。
 
+## 当前状态
+
+- ✅ 已整合并提交到 git（root-commit，290 文件）
+- ✅ `skills/sap-abap-knowledge` 已安装到 `~/.agents/skills/` 并**实测触发正常**（自动发现 + 加载 + 内容读取全通）
+- ✅ 原始三个仓库目录已删除，工作区只保留整合后的集合
+- ✅ 凭据/缓存文件已通过 `.gitignore` 排除
+
 ## 结构
 
 ```
@@ -25,7 +32,7 @@ sap-knowledge/
 ## 快速开始
 
 ```bash
-# 1) 知识库（装一个文件夹 = 全部知识可用）
+# 1) 知识库（装一个文件夹 = 全部知识可用；已安装并验证）
 cp -r skills/sap-abap-knowledge ~/.agents/skills/
 
 # 2) 执行型 skill（如需写/查功能）
@@ -34,6 +41,7 @@ cp -r skills/sap-stock-availability ~/.agents/skills/
 ```
 
 Claude Code / OpenCode 会自动发现并加载。对话中出现 SAP/ABAP 话题即触发。
+`skills/sap-abap-knowledge` 已安装，其余两个执行型 skill 可按需安装。
 
 ## 数据来源
 
@@ -44,8 +52,14 @@ Claude Code / OpenCode 会自动发现并加载。对话中出现 SAP/ABAP 话�
 | `sap-functional-skill` 知识型 `sap-trench-skill` | `sap-abap-knowledge/references/modules/` + `authentication/` |
 | `sap-functional-skill` 执行型 `sap-sto-create` / `sap-stock-availability` | `skills/sap-sto-create/`、`skills/sap-stock-availability/`（原样） |
 
-> 原始三个仓库目录仍保留在工作区（`abap-cheat-sheets-main`、`SAP-ABAP-7.5-syntax-main`、`sap-functional-skill-main`），
-> 确认本集合可用后可按需归档或删除。
+## 版本控制
+
+仓库已用 git 管理（分支 `master`）。提交说明见 `git log`。
+
+```bash
+git status        # 查看工作区状态
+git log --oneline # 查看提交历史
+```
 
 ## License
 
