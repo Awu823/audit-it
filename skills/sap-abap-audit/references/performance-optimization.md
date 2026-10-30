@@ -1,7 +1,8 @@
 # ABAP 性能优化参考（审计整改用）
 
 > 精简版，供 `sap-abap-audit` 规则整改时引用。完整版含来源与示例：
-> `Resource/abap-performance-optimization.md`（工作区，含 S4Pedia / MDP Group / Koenig 来源）。
+> - Web 来源版：`Resource/abap-performance-optimization.md`（S4Pedia / MDP Group / Koenig）
+> - **GitHub 官方来源版**：`Resource/abap-performance-notes-github.md`（SAP-samples/abap-cheat-sheets `32_Performance_Notes.md`、SAP/styleguides Clean ABAP、SAP-samples/teched2025-DT266）
 
 ## 1. 数据库访问
 - **只读所需列**，避免 `SELECT *`；7.5 用 `FIELDS col1, col2`。
@@ -30,6 +31,13 @@
 
 ## 5. 定位工具
 - **ST05** SQL Trace、**SAT**（旧 SE30）Runtime Analysis、**SLIN** Extended Check。
+- **GitHub 官方**（teched2025-DT266）：ABAP Trace / ABAP Cross Trace、SQL Trace + HANA SQL Analyzer、Memory Inspector、Table Comparison Tool（优化前后比对防功能回归）。
+
+## 6. GitHub 官方补充要点（SAP Performance Notes / Clean ABAP）
+- **DB 访问**：`SELECT SINGLE` / `UP TO n ROWS` / `DISTINCT` 限结果集；`UPDATE ... SET` 指定列；聚合下推 DB；**避免嵌套 SELECT 循环**；JOIN/子查询/内表 JOIN 替代循环内 DB 访问；CDS 视图 code push-down；静态 SQL 优于动态。
+- **内表**：`TRANSPORTING` 限定字段；**块级** `INSERT/APPEND ... LINES OF`；**二级表键**优化标准表键访问（大表+填一次+少改+多读）；`SORT` 显式指定排序键；`CLEAR`（留内存）vs `FREE`（释放内存）；**避免过度表表达式**（先 FIELD-SYMBOL/引用该行再访问）。
+- **杂项**：`WHILE` 可能快于 `DO`；避免隐式类型转换；**传引用**优于传值（大数据集）；`CL_ABAP_PARALLEL` 并行。
+- **Clean ABAP 性能观**：勿过早优化；绝大多数 Clean Code 规则无性能负效应；10% 代码常占 90% 运行时间且 ABAP 多为 DB 时间 → 用 profile 定位热点做针对性优化。
 
 ## 规则映射
 | 审计规则 | 本节 |
