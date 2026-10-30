@@ -42,6 +42,8 @@ EXPECTED = [
     ("NO_AUTHORITY_CHECK", 43),
     ("SELECT_NO_WHERE", 43),
     ("SELECT_IN_LOOP", 50),
+    ("STANDARD_TABLE_LINEAR_READ", 60),
+    ("SORT_WITHOUT_KEY", 66),
 ]
 
 # These should NOT fire (false-positive guards) on the same sample
@@ -53,6 +55,8 @@ NOT_EXPECTED = [
     ("SELECT_NO_WHERE", 31),  # FAE select carries WHERE (L32) -> no finding
     ("FAE_NO_DEDUP", 6),      # no FOR ALL ENTRIES on this line
     ("SELECT_NO_WHERE", 54),  # JOIN-based select without WHERE -> JOIN filters
+    ("STANDARD_TABLE_LINEAR_READ", 37),  # READ ... INDEX 1 -> INDEX excluded
+    ("SORT_WITHOUT_KEY", 63), # explicit sort key (BY) -> no implicit-sort finding
 ]
 
 

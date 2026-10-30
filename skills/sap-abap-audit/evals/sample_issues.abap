@@ -55,3 +55,12 @@ SELECT a~vbeln, b~posnr
   FROM vbak AS a
   INNER JOIN vbap AS b ON b~vbeln = a~vbeln
   INTO TABLE @DATA(lt_join_res).
+
+" READ TABLE WITH KEY on STANDARD table -> STANDARD_TABLE_LINEAR_READ
+READ TABLE lt_ekko WITH KEY ebeln = lv_ebeln.
+
+" SORT with explicit key -> SORT_WITHOUT_KEY must NOT fire
+SORT lt_ekko BY ebeln.
+
+" SORT without explicit key -> SORT_WITHOUT_KEY
+SORT lt_ekko.
