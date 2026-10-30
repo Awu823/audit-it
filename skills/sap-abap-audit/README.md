@@ -35,7 +35,8 @@ sap-abap-audit/
 ├── SKILL.md                     # 触发描述 + 规则表 + 用法
 ├── README.md                    # 本说明
 ├── references/
-│   └── audit-checklist.md       # 人工复核清单（现象→后果→整改）
+│   ├── audit-checklist.md       # 人工复核清单（现象→后果→整改）
+│   └── performance-optimization.md  # 性能优化参考（SELECT/FAE/内表/循环，来源见 Resource/）
 ├── scripts/
 │   └── audit_abap.py            # 审计引擎（14 规则，纯标准库）
 └── evals/

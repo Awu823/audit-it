@@ -29,6 +29,9 @@ for _stream in (sys.stdout, sys.stderr):
         _stream.reconfigure(encoding="utf-8", errors="replace")
 
 KNOWLEDGE_REL = "../sap-abap-knowledge/references"
+# Performance-focused remediation reference bundled with this skill; the full
+# source-backed version lives at Resource/abap-performance-optimization.md.
+PERF_REF = "references/performance-optimization.md"
 SEV_RANK = {"error": 3, "warn": 2, "info": 1}
 ABAP_EXTS = (".abap", ".clas.abap", ".prog.abap", ".inc.abap",
              ".intf.abap", ".include.abap", ".asbdef", ".asddls")
@@ -173,7 +176,7 @@ def audit_source(text: str) -> list[Finding]:
                     "SELECT * 全字段读取",
                     "`SELECT *` 会读取全部字段，增加传输量与开销；应只读所需列"
                     "（7.5 可用 `FIELDS col1, col2`）。",
-                    f"{KNOWLEDGE_REL}/abap/03_abap_sql.md", idx))
+                    PERF_REF, idx))
         elif in_select:
             select_lines.append(idx)
             if RE_TARGET.search(code) or (code.rstrip().endswith(".")):
@@ -195,7 +198,7 @@ def audit_source(text: str) -> list[Finding]:
                     "FOR ALL ENTRIES 未先判空",
                     f"`FOR ALL ENTRIES IN {itab}` 前未见 `IF {itab}[] IS NOT INITIAL` / "
                     f"`line_exists`。内表为空时该语句会匹配全表，造成错误结果。",
-                    f"{KNOWLEDGE_REL}/abap/31_where_conditions.md", idx))
+                    PERF_REF, idx))
 
         # ---- COMMIT inside loop ----
         if RE_COMMIT.match(code) and loop_depth > 0:
@@ -241,7 +244,7 @@ def audit_source(text: str) -> list[Finding]:
                 "循环内 MODIFY/INSERT",
                 "在循环内逐行 MODIFY/INSERT 内表，可能退化为 O(n²)；应批量构建后一次"
                 "`CORRESPONDING`/`VALUE` 赋值或按 key 排序后批量处理。",
-                f"{KNOWLEDGE_REL}/abap/01_internal_tables.md", idx))
+                PERF_REF, idx))
 
         # ---- CONCATENATE ----
         if RE_CONCAT.search(code):
@@ -249,7 +252,7 @@ def audit_source(text: str) -> list[Finding]:
                 "CONCATENATE_LEGACY", "info", "modernization",
                 "CONCATENATE 可改字符串模板",
                 "简单拼接可用字符串模板 `|...|`（`{var}`）替代 `CONCATENATE`，更可读。",
-                f"{KNOWLEDGE_REL}/abap/07_string_processing.md", idx))
+                PERF_REF, idx))
 
         # ---- APPEND / COLLECT ----
         if RE_APPEND_COLLECT.match(code):
@@ -257,7 +260,7 @@ def audit_source(text: str) -> list[Finding]:
                 "APPEND_COLLECT_LEGACY", "info", "modernization",
                 "APPEND/COLLECT 可改构造器",
                 "可用 `VALUE #( ... )` 构造器表达式批量赋值内表，避免逐行 APPEND/COLLECT。",
-                f"{KNOWLEDGE_REL}/abap/05_constructor_expressions.md", idx))
+                PERF_REF, idx))
 
         # ---- READ TABLE ... INTO vs field-symbol ----
         if RE_READ_INTO.match(code):
@@ -265,7 +268,7 @@ def audit_source(text: str) -> list[Finding]:
                 "WORKAREA_INSTEAD_OF_FS", "info", "performance",
                 "READ TABLE INTO 建议 ASSIGNING",
                 "读取到工作区会复制整行；若只读不改写，建议 `READ TABLE ... ASSIGNING <fs>`。",
-                f"{KNOWLEDGE_REL}/abap/01_internal_tables.md", idx))
+                PERF_REF, idx))
 
         # ---- line length ----
         if len(raw.rstrip("\n")) > 120:

@@ -2,6 +2,8 @@
 
 本文件是 `sap-abap-audit` 的人工复核清单，配合规则引擎使用。规则给出**定位**，
 本清单给出**人工确认与整改**的完整思路，按类别组织。
+> 性能类问题（SELECT *、FOR ALL ENTRIES、循环内写、READ INTO、构造器）的详细整改与
+> 权威来源，另见 `references/performance-optimization.md`（完整版 `Resource/abap-performance-optimization.md`）。
 
 ## 1. 正确性（error）
 
