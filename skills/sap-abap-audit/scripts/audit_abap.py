@@ -87,6 +87,12 @@ RE_UP_TO = re.compile(r"\bUP\s+TO\b", re.I)
 RE_AGGREGATE = re.compile(r"\b(?:COUNT\s*\(|SUM\s*\(|MAX\s*\(|MIN\s*\(|AVG\s*\(|GROUP\s+BY)\b", re.I)
 RE_SORTED_DECL = re.compile(r"\b(\w+)\s*TYPE\s+(?:SORTED|HASHED)\s+TABLE\b", re.I)
 RE_JOIN = re.compile(r"\bJOIN\b", re.I)
+RE_STANDARD_DECL = re.compile(r"\b(\w+)\s*TYPE\s+(?:STANDARD\s+)?TABLE\s+OF\b", re.I)
+RE_READ_TABLE_KEY = re.compile(
+    r"^\s*READ\s+TABLE\s+(\w+)\b.*\bWITH\s+(?:TABLE\s+)?KEY\b", re.I)
+RE_BINARY_SEARCH = re.compile(r"\bBINARY\s+SEARCH\b", re.I)
+RE_INDEX = re.compile(r"\bINDEX\b", re.I)
+RE_SORT_NOKEY = re.compile(r"^\s*SORT\s+(\w+)\s*(?:DESCENDING|ASCENDING)?\s*\.\s*$", re.I)
 
 
 def _strip_comment(line: str) -> str:
@@ -151,6 +157,16 @@ def audit_source(text: str) -> list[Finding]:
         _m = RE_SORTED_DECL.search(_strip_comment(ln))
         if _m:
             sorted_tables.add(_m.group(1).lower())
+
+    # Pre-scan: names of plainly-declared STANDARD tables (`TYPE TABLE OF` /
+    # `TYPE STANDARD TABLE OF`) so STANDARD_TABLE_LINEAR_READ can target them.
+    # Tables declared via a named TYPE (e.g. `TYPE ty_t`) are skipped to avoid
+    # false positives on SORTED/HASHED types we cannot resolve statically.
+    standard_tables: set[str] = set()
+    for ln in lines:
+        _m = RE_STANDARD_DECL.search(_strip_comment(ln))
+        if _m:
+            standard_tables.add(_m.group(1).lower())
 
     def finish_select(flag_if_no_into: bool, complete: bool = False) -> None:
         nonlocal in_select, select_lines
@@ -322,6 +338,29 @@ def audit_source(text: str) -> list[Finding]:
                 "WORKAREA_INSTEAD_OF_FS", "info", "performance",
                 "READ TABLE INTO 建议 ASSIGNING",
                 "读取到工作区会复制整行；若只读不改写，建议 `READ TABLE ... ASSIGNING <fs>`。",
+                PERF_REF, idx))
+
+        # ---- READ TABLE ... WITH KEY on a plain STANDARD table (linear scan) ----
+        m_rt = RE_READ_TABLE_KEY.match(code)
+        if m_rt:
+            itab = m_rt.group(1).lower()
+            if itab in standard_tables and itab not in sorted_tables \
+                    and not RE_BINARY_SEARCH.search(code) and not RE_INDEX.search(code):
+                findings.append(Finding(
+                    "STANDARD_TABLE_LINEAR_READ", "info", "performance",
+                    "标准表键查找（线性）",
+                    f"`READ TABLE {itab}` 用 WITH KEY 在 STANDARD 表上线性查找（O(n)）；"
+                    f"建议改用 SORTED/HASHED 表、二级表键，或 `BINARY SEARCH`（需先 SORT）。",
+                    PERF_REF, idx))
+
+        # ---- SORT without an explicit sort key (implicit standard-key sort) ----
+        m_sort = RE_SORT_NOKEY.match(code)
+        if m_sort:
+            findings.append(Finding(
+                "SORT_WITHOUT_KEY", "info", "performance",
+                "SORT 未显式指定排序键",
+                f"`SORT {m_sort.group(1)}` 按标准键隐式排序，成本高且易误用；"
+                f"建议显式指定排序键（`SORT ... BY field`）。",
                 PERF_REF, idx))
 
         # ---- line length ----
