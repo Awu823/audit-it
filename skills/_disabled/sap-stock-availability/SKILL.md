@@ -2,6 +2,8 @@
 name: sap-stock-availability
 description: 查询 SAP 库存与物料可用性(只读):ATP 可用量与能否发货、MD04 供需缺口与缺料时间、按库存地点或批次的账面库存、特殊库存(销售订单/供应商寄售/客户寄售)、近期收发货明细、按描述找物料号。当用户问"某物料在某工厂还有多少库存/可用量""库存够不够发""什么时候缺料""库存在哪个库存地点""最近收了多少、发了多少",即使没有点名本技能也应使用。不适用并应直接拒绝:任何过账/创建/修改/删除(收货、发货、转储、预留)、采购审批、财务凭证、物料主数据维护。
 license: MIT
+disabled: true
+status: disabled
 allowed-tools: [Read, Bash]
 metadata:
   version: "1.0.0"

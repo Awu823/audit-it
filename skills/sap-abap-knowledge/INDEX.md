@@ -95,5 +95,5 @@
 
 | Skill | 目录 | 类型 |
 |---|---|---|
-| STO 调拨订单创建 | `../sap-sto-create/` | 执行型（写入，OData + Java/JCo） |
-| 库存与可用性查询 | `../sap-stock-availability/` | 执行型（只读，REST2RFC） |
+| STO 调拨订单创建 | `../_disabled/sap-sto-create/` | 执行型（写入，OData + Java/JCo，**已禁用**） |
+| 库存与可用性查询 | `../_disabled/sap-stock-availability/` | 执行型（只读，REST2RFC，**已禁用**） |

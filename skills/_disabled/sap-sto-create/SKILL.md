@@ -1,6 +1,8 @@
 ---
 name: sap-sto-create
 description: "通过 S/4HANA OData API 创建 STO 调拨订单（ZSTO_T1/ZSTO_T2）。当用户意图为：创建 STO、创建 SAP 调拨订单、公司间/工厂间调拨、指定发出工厂+接收工厂+物料+数量+交期创建采购订单时触发。必须强制执行「先 preview 确认、再 create」的双步骤门禁。"
+disabled: true
+status: disabled
 ---
 
 # SAP STO 订单创建技能（OData）
