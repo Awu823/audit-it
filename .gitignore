@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Credentials & secrets (never commit)
+connection.json
+.env
+*.pem
+*.key
+*.jks
+*.p12
+
+# Cache / temp
+.cache/
+.cache/
+*.log
+.DS_Store
+Thumbs.db
