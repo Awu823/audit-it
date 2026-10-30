@@ -98,5 +98,6 @@ python3 evals/run_audit_test.py            # 对 evals/sample_issues.abap 断言
 ## 关联知识库
 
 - 规则整改参考指向 `../sap-abap-knowledge/references/`（ABAP 语法 cheat sheets + 模块实战），
-  性能类规则指向技能自带的 `references/performance-optimization.md`（来源见 `Resource/abap-performance-optimization.md`）。
+  性能类规则指向技能自带的 `references/performance-optimization.md`（来源：
+  Web 版 `Resource/abap-performance-optimization.md` + **GitHub 官方版** `Resource/abap-performance-notes-github.md`）。
 - 需要更深入的代码逻辑梳理/onboarding，可参考环境的 `analyzing-programs`、`abap-logic-doc` 类技能。
