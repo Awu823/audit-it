@@ -123,5 +123,5 @@ metadata:
 
 ## 相关执行型 Skill（独立，不在此知识库内）
 
-- `../sap-sto-create` — 通过 S/4HANA OData 创建 STO 调拨订单（写入，Python + Java/JCo）
-- `../sap-stock-availability` — 经 REST2RFC 只读查询库存 / MD04 / 物料移动（只读，Python）
+- `../_disabled/sap-sto-create` — 通过 S/4HANA OData 创建 STO 调拨订单（写入，Python + Java/JCo，**已禁用**）
+- `../_disabled/sap-stock-availability` — 经 REST2RFC 只读查询库存 / MD04 / 物料移动（只读，Python，**已禁用**）
