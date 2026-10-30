@@ -7,10 +7,12 @@
 扫描 ABAP 源文件（单个文件或整个目录），按**严重级别**（error / warn / info）输出发现项，
 每条映射到规则 ID、类别，并给出知识库整改参考（`../sap-abap-knowledge/`）。
 
-- **14 条规则**：正确性（SELECT 缺目标、FOR ALL ENTRIES 未判空）、性能（SELECT *、循环内
-  COMMIT/MODIFY/INSERT、READ INTO vs ASSIGNING）、安全（动态 SQL 注入、敏感表无权限检查）、
-  现代化（TABLES/PERFORM/CONCATENATE/APPEND）、质量（TODO/FIXME、行长）。
-- **跨引用**：每条规则的整改提示指向 `sap-abap-knowledge/references/` 对应 cheat sheet / 模块参考。
+- **17 条规则**：正确性（SELECT 缺目标、FOR ALL ENTRIES 未判空）、性能（SELECT *、SELECT 无 WHERE、
+  循环内 SELECT、循环内 COMMIT/MODIFY/INSERT、FAE 未去重、READ INTO vs ASSIGNING）、
+  安全（动态 SQL 注入、敏感表无权限检查）、现代化（TABLES/PERFORM/CONCATENATE/APPEND）、
+  质量（TODO/FIXME、行长）。
+- **跨引用**：每条规则的整改提示指向 `sap-abap-knowledge/references/` 对应 cheat sheet / 模块参考，
+  性能类指向本技能 `references/performance-optimization.md`。
 
 ## 用法
 
@@ -38,7 +40,7 @@ sap-abap-audit/
 │   ├── audit-checklist.md       # 人工复核清单（现象→后果→整改）
 │   └── performance-optimization.md  # 性能优化参考（SELECT/FAE/内表/循环，来源见 Resource/）
 ├── scripts/
-│   └── audit_abap.py            # 审计引擎（14 规则，纯标准库）
+│   └── audit_abap.py            # 审计引擎（17 规则，纯标准库）
 └── evals/
     ├── sample_issues.abap       # 带已知问题的样例（回归基准）
     └── run_audit_test.py        # 回归：断言预期发现项 + 防误报
@@ -47,7 +49,7 @@ sap-abap-audit/
 ## 自检
 
 ```bash
-python3 evals/run_audit_test.py    # 15 条预期命中 + 3 条防误报
+python3 evals/run_audit_test.py    # 20 条预期命中 + 7 条防误报
 ```
 
 ## 许可

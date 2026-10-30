@@ -24,6 +24,16 @@
 - **后果**：多传数据、DB 负载上升；破坏 `INTO CORRESPONDING` 的意图。
 - **整改**：只读所需列；7.5 用 `FIELDS col1, col2`。
 
+### SELECT 无 WHERE（全表读取）
+- **现象**：`SELECT` 无 `WHERE`/`UP TO`/聚合（且非 JOIN 过滤）。
+- **后果**：全表读取，数据量大时显著变慢、内存激增。
+- **整改**：加 WHERE 用索引列；确需全表时确认表为小表/配置表，或 `UP TO n ROWS` 限行。
+
+### 循环内 SELECT
+- **现象**：LOOP/DO/WHILE 内 `SELECT`（含 `SELECT SINGLE`）。
+- **后果**：每次迭代一次 DB 往返；大数据量下性能劣化明显。
+- **整改**：改为批量读取（`FOR ALL ENTRIES` / `JOIN` / `IN @itab`）并在循环外处理。
+
 ### 循环内 COMMIT WORK
 - **现象**：LOOP/DO/WHILE 内 `COMMIT WORK`（且未 `AND WAIT`）。
 - **后果**：LUW 被切碎、原子性丢失、频繁 DB 往返。
@@ -33,6 +43,11 @@
 - **现象**：循环内逐行 `MODIFY`/`INSERT` 内表。
 - **后果**：可能 O(n²)；可读性差。
 - **整改**：批量 `VALUE #( )` / `CORRESPONDING`，或按 key 排序后 `MODIFY TABLE`。
+
+### FOR ALL ENTRIES 内表未去重
+- **现象**：`FOR ALL ENTRIES IN itab` 前未对 `itab` 去重（且非 SORTED/HASHED）。
+- **后果**：重复 key 增加 DB 接口/内核开销；大内表下可测的性能劣化。
+- **整改**：`SORT itab` + `DELETE ADJACENT DUPLICATES`，或声明 `TYPE SORTED TABLE ... WITH UNIQUE KEY`。
 
 ### READ TABLE ... INTO 建议 ASSIGNING
 - **现象**：`READ TABLE ... INTO <wa>`（仅读不改）。

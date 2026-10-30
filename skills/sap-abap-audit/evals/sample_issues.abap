@@ -44,3 +44,14 @@ SELECT * FROM usr02 INTO TABLE @DATA(lt_user).
 
 FORM do_something.
 ENDFORM.
+
+" SELECT inside a loop -> SELECT_IN_LOOP (nested DB access per iteration)
+LOOP AT lt_ekko INTO DATA(ls_ekko2).
+  SELECT SINGLE * FROM ekko WHERE ebeln = ls_ekko2-ebeln.
+ENDLOOP.
+
+" JOIN-based select without WHERE -> SELECT_NO_WHERE must NOT fire (JOIN filters)
+SELECT a~vbeln, b~posnr
+  FROM vbak AS a
+  INNER JOIN vbap AS b ON b~vbeln = a~vbeln
+  INTO TABLE @DATA(lt_join_res).

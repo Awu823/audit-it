@@ -25,18 +25,23 @@ EXPECTED = [
     ("TABLES_DECL", 6),
     ("TODO_FIXME", 13),
     ("SELECT_ALL", 15),
+    ("SELECT_NO_WHERE", 15),
     ("SELECT_NO_INTO", 17),
     ("SELECT_ALL", 17),
+    ("SELECT_NO_WHERE", 17),
     ("SELECT_ALL", 21),
     ("SELECT_NO_INTO", 21),
     ("MODIFY_INSERT_IN_LOOP", 25),
     ("COMMIT_IN_LOOP", 26),
     ("FOR_ALL_ENTRIES_NO_EMPTY_CHECK", 31),
+    ("FAE_NO_DEDUP", 31),
     ("CONCATENATE_LEGACY", 35),
     ("WORKAREA_INSTEAD_OF_FS", 37),
     ("PERFORM_LEGACY", 39),
     ("DYNAMIC_SQL_CONCAT", 41),
     ("NO_AUTHORITY_CHECK", 43),
+    ("SELECT_NO_WHERE", 43),
+    ("SELECT_IN_LOOP", 50),
 ]
 
 # These should NOT fire (false-positive guards) on the same sample
@@ -44,6 +49,10 @@ NOT_EXPECTED = [
     ("SELECT_NO_INTO", 15),   # has INTO on same line
     ("SELECT_NO_INTO", 43),   # has INTO TABLE
     ("COMMIT_IN_LOOP", 15),   # not in a loop
+    ("SELECT_NO_WHERE", 21),  # has WHERE on next line -> no full-scan finding
+    ("SELECT_NO_WHERE", 31),  # FAE select carries WHERE (L32) -> no finding
+    ("FAE_NO_DEDUP", 6),      # no FOR ALL ENTRIES on this line
+    ("SELECT_NO_WHERE", 54),  # JOIN-based select without WHERE -> JOIN filters
 ]
 
 
