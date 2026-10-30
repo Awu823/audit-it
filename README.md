@@ -52,6 +52,19 @@ Claude Code / OpenCode 会自动发现并加载。对话中出现 SAP/ABAP 话�
 | `sap-functional-skill` 知识型 `sap-trench-skill` | `sap-abap-knowledge/references/modules/` + `authentication/` |
 | `sap-functional-skill` 执行型 `sap-sto-create` / `sap-stock-availability` | `skills/sap-sto-create/`、`skills/sap-stock-availability/`（原样） |
 
+## 自检 / 回归
+
+```bash
+# 知识库冒烟回归（离线，13 例：路由文件存在 + 关键词命中）
+py skills/sap-abap-knowledge/evals/run_smoke.py skills/sap-abap-knowledge
+
+# 执行型 skill 连通性检查（前置依赖 + 配置状态；配置齐全后自动做 LIVE 探测）
+py skills/sap-sto-create/scripts/check_connectivity.py
+py skills/sap-stock-availability/scripts/check_connectivity.py
+```
+
+> 库存 skill 的 LIVE 阶段复用自带 `doctor`（只读 BAPI_MATERIAL_GETLIST 探测）；STO 在配置 `.env` 后做 OData 服务根 GET。未配置时输出清晰的 `NOT_CONFIGURED` / `NOT_READY` 状态与下一步指引。
+
 ## 版本控制
 
 仓库已用 git 管理（分支 `master`）。提交说明见 `git log`。

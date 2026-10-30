@@ -1,54 +1,81 @@
+# sap-abap-knowledge 评测/回归集
+# route 为相对技能根目录的目标文件；run_smoke.py 据此做离线回归（文件存在 + 关键词命中）。
+# 本文件既是 LLM 评测集（question -> expected_contains），也可被 scripts/run_smoke.py 直接执行。
+
 - question: "MIGO 过账时报错 'Serial number already exists'，怎么解决？"
-  expected_contains:
-    - "序列号"
-    - "重复"
+  route: references/modules/troubleshooting.md
+  expected_contains: ["序列号", "重复"]
   expected_skill_used: true
   tags: [mm, troubleshooting]
 
 - question: "SD 定价过程中 PR00 条件类型找不到，根因是什么？"
-  expected_contains:
-    - "条件类型"
-    - "定价"
-    - "访问顺序"
+  route: references/modules/sd.md
+  expected_contains: ["条件类型", "定价", "KONV"]
   expected_skill_used: true
   tags: [sd, pricing]
 
 - question: "IDoc 状态 51 的排查思路是什么？"
-  expected_contains:
-    - "状态 51"
-    - "错误"
-    - "SXI_MONITOR"
+  route: references/modules/integration.md
+  expected_contains: ["状态 51", "错误", "SXI_MONITOR"]
   expected_skill_used: true
   tags: [integration, idoc]
 
 - question: "ABAP 里如何用 BAdI 实现增强？给我完整步骤。"
-  expected_contains:
-    - "SE18"
-    - "SE19"
-    - "实现类"
+  route: references/modules/abap-dev.md
+  expected_contains: ["SE18", "SE19", "实现类"]
   expected_skill_used: true
   tags: [abap, badi]
 
 - question: "STO 工厂间调拨的科目确定配置在哪里？"
-  expected_contains:
-    - "科目确定"
-    - "OMJJ"
-    - "移动类型"
+  route: references/modules/mm.md
+  expected_contains: ["科目确定", "OBYC", "移动类型"]
   expected_skill_used: true
   tags: [mm, sto]
 
 - question: "AUTHORITY-CHECK 报权限不足，SU53 看不到对象，怎么诊断？"
-  expected_contains:
-    - "SU53"
-    - "权限对象"
-    - "AUTHORITY-CHECK"
+  route: references/modules/auth.md
+  expected_contains: ["SU53", "权限对象", "AUTHORITY-CHECK"]
   expected_skill_used: true
   tags: [auth]
 
 - question: "SmartForms 打印预览正常但实际输出空白，什么原因？"
-  expected_contains:
-    - "SmartForms"
-    - "输出类型"
-    - "NACE"
+  route: references/modules/print.md
+  expected_contains: ["SmartForms", "输出类型", "NACE"]
   expected_skill_used: true
   tags: [print, smartforms]
+
+- question: "ABAP 内表怎么按字段 GROUP BY 分组统计？"
+  route: references/abap/11_internal_tables_grouping.md
+  expected_contains: ["GROUP"]
+  expected_skill_used: true
+  tags: [abap, itab, groupby]
+
+- question: "CDS 视图里怎么定义 association？"
+  route: references/abap/15_cds_view_entities.md
+  expected_contains: ["association"]
+  expected_skill_used: true
+  tags: [abap, cds, association]
+
+- question: "ABAP 7.5 的 SELECT FIELDS 新语法怎么用？"
+  route: references/abap-new-syntax/README.md
+  expected_contains: ["FIELDS"]
+  expected_skill_used: true
+  tags: [abap, syntax, 7.5, sql]
+
+- question: "COMMIT WORK 和 COMMIT WORK AND WAIT 有什么区别？"
+  route: references/abap-new-syntax/README.md
+  expected_contains: ["COMMIT WORK"]
+  expected_skill_used: true
+  tags: [abap, luw, commit]
+
+- question: "VA01 创建销售订单用哪个 BAPI / 关键表？"
+  route: references/modules/reference-tables.md
+  expected_contains: ["VA01"]
+  expected_skill_used: true
+  tags: [sd, tcode, bapi]
+
+- question: "OData 对接用 OAuth2 认证怎么配？"
+  route: references/authentication/04-oidc-oauth2.md
+  expected_contains: ["OAuth"]
+  expected_skill_used: true
+  tags: [integration, auth, oauth2]
