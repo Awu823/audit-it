@@ -7,9 +7,10 @@ description: |
   "静态检查", "code review", "找潜在 bug / 性能 / 安全风险". Scans ABAP source
   (files or directories) and reports findings by severity (error/warn/info), each
   mapped to a rule id, a category and a knowledge-base reference for remediation.
-  Covers: SELECT * / SELECT without INTO, FOR ALL ENTRIES without empty check,
-  COMMIT WORK inside loops, dynamic SQL / injection risk, legacy TABLES / PERFORM /
-  CONCATENATE / APPEND, READ TABLE INTO vs field-symbol, MODIFY/INSERT in loops,
+  Covers: SELECT * / SELECT without INTO / SELECT without WHERE / SELECT inside
+  loops, FOR ALL ENTRIES without empty check or without dedup, COMMIT WORK inside
+  loops, dynamic SQL / injection risk, legacy TABLES / PERFORM / CONCATENATE /
+  APPEND, READ TABLE INTO vs field-symbol, MODIFY/INSERT in loops,
   missing AUTHORITY-CHECK on sensitive tables, TODO/FIXME markers, over-long lines.
   Do NOT use for: auditing non-ABAP languages (Java, JS, Python), or running the code
   (this is read-only static analysis — no compile, no SAP connection).
@@ -53,13 +54,16 @@ python3 scripts/audit_abap.py <file|dir> --min-severity warn
 
 退出码：`0` 无 error/warn；`2` 有 warning；`3` 有 error。
 
-## 规则表（14 条）
+## 规则表（17 条）
 
 | 规则 | 级别 | 类别 | 检测点 | 知识库参考 |
 |---|---|---|---|---|
 | `SELECT_ALL` | warn | performance | `SELECT *` 全字段读取 | `references/performance-optimization.md` |
 | `SELECT_NO_INTO` | error | correctness | SELECT 缺目标子句（无 `INTO`/`APPENDING`） | `03_abap_sql.md` |
+| `SELECT_NO_WHERE` | info | performance | SELECT 无 WHERE（全表读取，JOIN 除外） | `references/performance-optimization.md` |
+| `SELECT_IN_LOOP` | warn | performance | 循环内 SELECT（含 SELECT SINGLE） | `references/performance-optimization.md` |
 | `FOR_ALL_ENTRIES_NO_EMPTY_CHECK` | error | correctness | `FOR ALL ENTRIES` 前未判空 | `references/performance-optimization.md` |
+| `FAE_NO_DEDUP` | info | performance | `FOR ALL ENTRIES` 内表未去重（SORTED/HASHED 除外） | `references/performance-optimization.md` |
 | `COMMIT_IN_LOOP` | warn | luw | LOOP/DO/WHILE 内 `COMMIT WORK` | `17_sap_luw.md` |
 | `DYNAMIC_SQL_CONCAT` | warn | security | 动态 SQL / 字符串拼接构造语句 | `06_dynamic_programming.md` |
 | `TABLES_DECL` | warn | modernization | 遗留 `TABLES:` 声明 | `02_structures.md` |

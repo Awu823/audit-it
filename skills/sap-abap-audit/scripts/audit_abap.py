@@ -81,6 +81,12 @@ RE_READ_INTO = re.compile(r"^\s*READ\s+TABLE\b.*\bINTO\b(?!\s*(?:TRANSPORTING|TA
 RE_TODO = re.compile(r"\b(?:TODO|FIXME|XXX|HACK)\b", re.I)
 RE_SENSITIVE_TABLE = re.compile(r"\b(?:USR0[1234]|USR02|AGR_\w+|SUCH\w+|AUTH\w+)\b", re.I)
 RE_AUTH_CHECK = re.compile(r"\bAUTHORITY-CHECK\b", re.I)
+RE_SELECT_ANY = re.compile(r"^\s*SELECT\b", re.I)
+RE_WHERE = re.compile(r"\bWHERE\b", re.I)
+RE_UP_TO = re.compile(r"\bUP\s+TO\b", re.I)
+RE_AGGREGATE = re.compile(r"\b(?:COUNT\s*\(|SUM\s*\(|MAX\s*\(|MIN\s*\(|AVG\s*\(|GROUP\s+BY)\b", re.I)
+RE_SORTED_DECL = re.compile(r"\b(\w+)\s*TYPE\s+(?:SORTED|HASHED)\s+TABLE\b", re.I)
+RE_JOIN = re.compile(r"\bJOIN\b", re.I)
 
 
 def _strip_comment(line: str) -> str:
@@ -108,6 +114,17 @@ def _same_itab_guarded(window: str, itab: str) -> bool:
     return bool(same_line.search(window))
 
 
+def _same_itab_deduped(window: str, itab: str) -> bool:
+    """True if `window` contains the standard pre-FOR-ALL-ENTRIES dedup idiom
+    for the SAME table: `SORT <itab>` followed by `DELETE ADJACENT DUPLICATES
+    FROM <itab>`. Only that pair suppresses the FAE_NO_DEDUP finding."""
+    itab_re = re.escape(itab)
+    has_sort = re.search(rf"\bSORT\s+{itab_re}\b", window, re.I)
+    has_dedup = re.search(
+        rf"\bDELETE\s+ADJACENT\s+DUPLICATES\s+FROM\s+{itab_re}\b", window, re.I)
+    return bool(has_sort and has_dedup)
+
+
 def _is_comment(line: str) -> bool:
     """ABAP comment: blank line, or a line starting with `*` (classic program
     comment, incl. `*&` macro directives)."""
@@ -127,11 +144,19 @@ def audit_source(text: str) -> list[Finding]:
     in_select = False
     select_lines: list[int] = []
 
-    def finish_select(flag_if_no_into: bool) -> None:
+    # Pre-scan: names of SORTED/HASHED internal tables, so FAE_NO_DEDUP can skip
+    # tables that dedup by construction (SORTED/HASHED WITH UNIQUE KEY).
+    sorted_tables: set[str] = set()
+    for ln in lines:
+        _m = RE_SORTED_DECL.search(_strip_comment(ln))
+        if _m:
+            sorted_tables.add(_m.group(1).lower())
+
+    def finish_select(flag_if_no_into: bool, complete: bool = False) -> None:
         nonlocal in_select, select_lines
         if in_select:
-            has_into = any(RE_TARGET.search(_strip_comment(lines[i - 1]))
-                           for i in select_lines)
+            seg = "\n".join(_strip_comment(lines[i - 1]) for i in select_lines)
+            has_into = bool(RE_TARGET.search(seg))
             if flag_if_no_into and not has_into:
                 findings.append(Finding(
                     "SELECT_NO_INTO", "error", "correctness",
@@ -139,6 +164,19 @@ def audit_source(text: str) -> list[Finding]:
                     "SELECT 结果未读到目标（缺 INTO 或 INTO 缺失/被省略），可能引发运行时错误或整表读入。"
                     "应始终使用 `SELECT ... INTO [CORRESPONDING] TABLE @DATA(...)` 明确目标。",
                     f"{KNOWLEDGE_REL}/abap/03_abap_sql.md", select_lines[0]))
+            # Only judge a missing WHERE once the statement is definitely
+            # complete (terminator `.` / ENDSELECT / bail-out), so a WHERE on a
+            # later line of a multi-line SELECT is not misjudged. A JOIN (incl.
+            # 7.52+ internal-table JOIN `INNER JOIN @itab`) itself filters rows,
+            # so a JOIN-based SELECT without WHERE is NOT a full-table read.
+            if complete and not RE_WHERE.search(seg) and not RE_UP_TO.search(seg) \
+                    and not RE_AGGREGATE.search(seg) and not RE_JOIN.search(seg):
+                findings.append(Finding(
+                    "SELECT_NO_WHERE", "info", "performance",
+                    "SELECT 无 WHERE（全表读取）",
+                    "该 SELECT 未见 WHERE 限定，可能全表读取；除非是小表/主数据/配置表，"
+                    "应加 WHERE 过滤或 `UP TO n ROWS` 限行。",
+                    PERF_REF, select_lines[0]))
             in_select = False
             select_lines = []
 
@@ -162,14 +200,21 @@ def audit_source(text: str) -> list[Finding]:
         if RE_ENDLOOP.match(code):
             loop_depth = max(0, loop_depth - 1)
 
+        # ---- SELECT inside loop (nested DB access per iteration) ----
+        if RE_SELECT_ANY.match(code) and loop_depth > 0:
+            findings.append(Finding(
+                "SELECT_IN_LOOP", "warn", "performance",
+                "循环内 SELECT",
+                "循环体内执行 SELECT（含 SELECT SINGLE），每次迭代产生一次 DB 往返；"
+                "应改为批量读取（FOR ALL ENTRIES / JOIN / `IN @itab`）并在循环外处理。",
+                PERF_REF, idx))
+
         # ---- SELECT handling ----
         if RE_SELECT_BEGIN.match(code):
-            if RE_TARGET.search(code):
-                in_select = False
-                select_lines = []
-            else:
-                in_select = True
-                select_lines = [idx]
+            in_select = True
+            select_lines = [idx]
+            if code.rstrip().endswith("."):
+                finish_select(flag_if_no_into=True, complete=True)
             if RE_SELECT_STAR.search(code):
                 findings.append(Finding(
                     "SELECT_ALL", "warn", "performance",
@@ -179,13 +224,14 @@ def audit_source(text: str) -> list[Finding]:
                     PERF_REF, idx))
         elif in_select:
             select_lines.append(idx)
-            if RE_TARGET.search(code) or (code.rstrip().endswith(".")):
-                finish_select(flag_if_no_into=True)
+            if code.rstrip().endswith(".") or RE_TARGET.search(code):
+                finish_select(flag_if_no_into=True,
+                              complete=bool(code.rstrip().endswith(".")))
             elif idx - select_lines[0] > 25:
-                finish_select(flag_if_no_into=True)
+                finish_select(flag_if_no_into=True, complete=True)
         # ENDSELECT also closes
         if re.match(r"^\s*ENDSELECT\b", code):
-            finish_select(flag_if_no_into=True)
+            finish_select(flag_if_no_into=True, complete=True)
 
         # ---- FOR ALL ENTRIES without empty check ----
         m = RE_FAE.search(code)
@@ -198,6 +244,14 @@ def audit_source(text: str) -> list[Finding]:
                     "FOR ALL ENTRIES 未先判空",
                     f"`FOR ALL ENTRIES IN {itab}` 前未见 `IF {itab}[] IS NOT INITIAL` / "
                     f"`line_exists`。内表为空时该语句会匹配全表，造成错误结果。",
+                    PERF_REF, idx))
+            if itab.lower() not in sorted_tables and not _same_itab_deduped(window, itab):
+                findings.append(Finding(
+                    "FAE_NO_DEDUP", "info", "performance",
+                    "FOR ALL ENTRIES 内表未去重",
+                    f"`FOR ALL ENTRIES IN {itab}` 前未见对该内表 `SORT` + "
+                    f"`DELETE ADJACENT DUPLICATES`；重复 key 会增加 DB 接口开销。"
+                    f"建议去重，或改用 `TYPE SORTED TABLE ... WITH UNIQUE KEY`。",
                     PERF_REF, idx))
 
         # ---- COMMIT inside loop ----
@@ -289,7 +343,7 @@ def audit_source(text: str) -> list[Finding]:
                 "`AUTHORITY-CHECK OBJECT ...` 并处理权限不足。",
                 f"{KNOWLEDGE_REL}/abap/25_authorization_checks.md", idx))
 
-    finish_select(flag_if_no_into=True)
+    finish_select(flag_if_no_into=True, complete=True)
     return findings
 
 
