@@ -65,7 +65,6 @@ RE_LOOP = re.compile(r"^\s*(?:LOOP|DO|WHILE)\b", re.I)
 RE_ENDLOOP = re.compile(r"^\s*(?:ENDLOOP|ENDDO|ENDWHILE)\b", re.I)
 RE_COMMIT = re.compile(r"^\s*COMMIT\s+WORK\b(?!\s+AND\s+WAIT)", re.I)
 RE_FAE = re.compile(r"\bFOR\s+ALL\s+ENTRIES\s+IN\s+@?(\w+)", re.I)
-RE_EMPTY_CHECK = re.compile(r"\b(?:IS\s+NOT\s+INITIAL|line_exists\s*\(|IS\s+INITIAL)", re.I)
 RE_DYN_SQL = re.compile(r"(?:WHERE\s*\(|SELECT\s*\(\s*[^)]*\)\s*FROM|"
                         r"OPEN\s+DATASET|EXEC\s+SQL|FROM\s*\(|GENERATE\s+SUBROUTINE)", re.I)
 RE_SQL_IN_STRING = re.compile(r"'(?:SELECT|WHERE|FROM|DELETE|UPDATE|INSERT|TABLE)\b", re.I)
@@ -73,7 +72,7 @@ RE_CONCAT_OP = re.compile(r"&&")
 RE_CONCAT = re.compile(r"\bCONCATENATE\b", re.I)
 RE_TABLES = re.compile(r"^\s*TABLES\s*:", re.I)
 RE_PERFORM = re.compile(r"^\s*PERFORM\b(?!\s*[A-Za-z0-9_]+\s*IN\s+PROGRAM)", re.I)
-RE_MODIFY_INSERT = re.compile(r"^\s*(?:MODIFY|INSERT)\b", re.I)
+RE_MODIFY_INSERT = re.compile(r"^\s*(?:MODIFY|INSERT)\b.*\b(?:INDEX|WHERE)\b", re.I)
 RE_APPEND_COLLECT = re.compile(r"^\s*(?:APPEND|COLLECT)\b", re.I)
 RE_READ_INTO = re.compile(r"^\s*READ\s+TABLE\b.*\bINTO\b(?!\s*(?:TRANSPORTING|TABLE|LINE))", re.I)
 RE_TODO = re.compile(r"\b(?:TODO|FIXME|XXX|HACK)\b", re.I)
@@ -90,6 +89,20 @@ def _strip_comment(line: str) -> str:
         elif ch == '"' and not in_str:
             return line[:i]
     return line
+
+
+def _same_itab_guarded(window: str, itab: str) -> bool:
+    """True if `window` (a few preceding source lines) contains an empty-guard
+    that references the SAME internal table as the FOR ALL ENTRIES, i.e.
+    `IF <itab> IS NOT INITIAL` / `<itab>[] IS NOT INITIAL` / `line_exists( <itab> )`.
+    A guard on a DIFFERENT table (e.g. `IF lt_range IS NOT INITIAL`) does NOT
+    protect `FOR ALL ENTRIES IN @lt_mast_lookup`, so it must not count."""
+    itab_re = re.escape(itab)
+    same_line = re.compile(
+        rf"(?:{itab_re}\[?\]?\s+IS\s+NOT\s+INITIAL"
+        rf"|IS\s+NOT\s+INITIAL[^\n]*\b{itab_re}\b"
+        rf"|line_exists\s*\(\s*{itab_re}\b)", re.I)
+    return bool(same_line.search(window))
 
 
 def _is_comment(line: str) -> bool:
@@ -176,7 +189,7 @@ def audit_source(text: str) -> list[Finding]:
         if m:
             itab = m.group(1)
             window = "\n".join(_strip_comment(lines[j - 1]) for j in range(max(1, idx - 15), idx))
-            if not RE_EMPTY_CHECK.search(window):
+            if not _same_itab_guarded(window, itab):
                 findings.append(Finding(
                     "FOR_ALL_ENTRIES_NO_EMPTY_CHECK", "error", "correctness",
                     "FOR ALL ENTRIES 未先判空",
