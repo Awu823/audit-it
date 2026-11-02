@@ -13,6 +13,7 @@ description: |
   APPEND, READ TABLE INTO vs field-symbol, STANDARD-table linear key lookup,
   SORT without explicit key, MODIFY/INSERT in loops, non-inline declarations
   not placed at the top of their scope (inline DATA(...)/TYPES(...) exempt),
+  SELECT INTO TABLE targeting an existing type without CORRESPONDING FIELDS,
   missing AUTHORITY-CHECK on sensitive tables, TODO/FIXME markers, over-long
   lines.
   Do NOT use for: auditing non-ABAP languages (Java, JS, Python), or running the code
@@ -57,7 +58,7 @@ python3 scripts/audit_abap.py <file|dir> --min-severity warn
 
 退出码：`0` 无 error/warn；`2` 有 warning；`3` 有 error。
 
-## 规则表（20 条）
+## 规则表（21 条）
 
 | 规则 | 级别 | 类别 | 检测点 | 知识库参考 |
 |---|---|---|---|---|
@@ -65,6 +66,7 @@ python3 scripts/audit_abap.py <file|dir> --min-severity warn
 | `SELECT_NO_INTO` | error | correctness | SELECT 缺目标子句（无 `INTO`/`APPENDING`） | `03_abap_sql.md` |
 | `SELECT_NO_WHERE` | info | performance | SELECT 无 WHERE（全表读取，JOIN 除外） | `references/performance-optimization.md` |
 | `SELECT_IN_LOOP` | warn | performance | 循环内 SELECT（含 SELECT SINGLE） | `references/performance-optimization.md` |
+| `INTO_NO_CORRESPONDING` | info | correctness | 显式列 `SELECT` + `INTO TABLE` 已有类型未用 `CORRESPONDING FIELDS`（内联 `@DATA` 豁免） | `03_abap_sql.md` |
 | `FOR_ALL_ENTRIES_NO_EMPTY_CHECK` | error | correctness | `FOR ALL ENTRIES` 前未判空 | `references/performance-optimization.md` |
 | `FAE_NO_DEDUP` | info | performance | `FOR ALL ENTRIES` 内表未去重（SORTED/HASHED 除外） | `references/performance-optimization.md` |
 | `COMMIT_IN_LOOP` | warn | luw | LOOP/DO/WHILE 内 `COMMIT WORK` | `17_sap_luw.md` |
