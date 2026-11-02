@@ -94,6 +94,52 @@ RE_BINARY_SEARCH = re.compile(r"\bBINARY\s+SEARCH\b", re.I)
 RE_INDEX = re.compile(r"\bINDEX\b", re.I)
 RE_SORT_NOKEY = re.compile(r"^\s*SORT\s+(\w+)\s*(?:DESCENDING|ASCENDING)?\s*\.\s*$", re.I)
 
+# ---- DECL_NOT_AT_TOP: declaration placement in scope ----
+# Non-inline declaration statements that traditional ABAP style requires to sit
+# at the top of their enclosing scope. `DATA(...)` / `TYPES(...)` inline
+# declarations are exempt (Clean ABAP inline style, e.g. DATA(lv_has_biz_error)).
+RE_DECL_NONINLINE = re.compile(
+    r"^\s*(?:DATA|TYPES|CONSTANTS|STATICS)\b(?!\s*\()", re.I)
+
+# Statements that are declarations / directives / headers and therefore do NOT
+# count as "executable" for the declaration-at-top heuristic. Keeping these out
+# of the executable set avoids false positives in the program declaration part
+# (TABLES / PARAMETERS / SELECT-OPTIONS / SELECTION-SCREEN), class definition
+# sections (METHODS / CLASS-DATA / PUBLIC / PRIVATE / ...) and INCLUDE headers.
+RE_NON_EXEC = re.compile(
+    r"^\s*(?:REPORT\b|PROGRAM\b|INCLUDE\b|FUNCTION-POOL\b|TABLES\b|TYPE-POOL\b|"
+    r"TYPE-POOLS\b|PARAMETERS\b|SELECT-OPTIONS\b|SELECTION-SCREEN\b|"
+    r"CLASS\b|INTERFACE\b|METHODS\b|CLASS-METHODS\b|EVENTS\b|CLASS-EVENTS\b|"
+    r"CLASS-DATA\b|CLASS-TYPES\b|CLASS-CONSTANTS\b|"
+    r"DATA\b|TYPES\b|CONSTANTS\b|STATICS\b|FIELD-SYMBOLS\b|"
+    r"PUBLIC\b|PRIVATE\b|PROTECTED\b|ALIASES\b|INTERFACES\b|DEFINE\b)", re.I)
+
+# Scope openers: opening a scope whose top is a fresh declaration area.
+# METHOD/FORM/FUNCTION are implementations; LOOP/DO/WHILE/IF/CASE/TRY and the
+# LOOP event blocks AT NEW/END OF/FIRST/LAST are nested blocks.
+RE_SCOPE_OPEN = re.compile(
+    r"^\s*(?:METHOD\s+\w+\s*\.|FORM\s+\w+\s*\.|FUNCTION\s+\w+\s*\.|"
+    r"LOOP\b|DO\b|WHILE\b|IF\b|CASE\b|TRY\b|"
+    r"AT\s+(?:NEW|END\s+OF|FIRST|LAST)\b)", re.I)
+
+# Alternative branches of a scope: reset the current frame's seen_exec so a
+# declaration at the top of the branch (ELSE/ELSEIF/WHEN/CATCH/CLEANUP) is
+# allowed even though earlier statements ran in the primary branch.
+RE_SCOPE_BRANCH = re.compile(
+    r"^\s*(?:ELSEIF\b|ELSE\b|WHEN\b|CATCH\b|CLEANUP\b)", re.I)
+
+# Scope closers. ENDCLASS is intentionally absent (CLASS is not pushed).
+RE_SCOPE_CLOSE = re.compile(
+    r"^\s*(?:ENDIF\b|ENDCASE\b|ENDTRY\b|ENDLOOP\b|ENDDO\b|ENDWHILE\b|"
+    r"ENDFORM\b|ENDFUNCTION\b|ENDMETHOD\b|ENDAT\b)", re.I)
+
+# Program-level event block headers: they open a fresh declaration area at the
+# root scope, so a declaration at the top of each event block is allowed.
+RE_EVENT_BLOCK = re.compile(
+    r"^\s*(?:START-OF-SELECTION\b|END-OF-SELECTION\b|TOP-OF-PAGE\b|"
+    r"INITIALIZATION\b|AT\s+SELECTION-SCREEN\b|AT\s+USER-COMMAND\b|"
+    r"AT\s+LINE-SELECTION\b)", re.I)
+
 
 def _strip_comment(line: str) -> str:
     """Remove inline comments (first `"` not inside a string literal)."""
@@ -132,15 +178,20 @@ def _same_itab_deduped(window: str, itab: str) -> bool:
 
 
 def _is_comment(line: str) -> bool:
-    """ABAP comment: blank line, or a line starting with `*` (classic program
-    comment, incl. `*&` macro directives)."""
+    """ABAP comment: blank line, or a line whose first non-blank char is `*`
+    (classic program comment, incl. `*&` macro directives) or `"` (inline
+    comment on its own line)."""
     s = line.lstrip()
-    return s == "" or s.startswith("*")
+    return s == "" or s.startswith("*") or s.startswith('"')
 
 
 def audit_source(text: str) -> list[Finding]:
     """Run all rules over a single ABAP source blob. Pure, no I/O."""
     findings: list[Finding] = []
+    # Strip a leading UTF-8 BOM so the first line (often a `*"!` comment) is not
+    # mistaken for executable code by the comment/scope heuristics.
+    if text.startswith("\ufeff"):
+        text = text[1:]
     lines = text.splitlines()
     n = len(lines)
 
@@ -149,6 +200,15 @@ def audit_source(text: str) -> list[Finding]:
     seen_auth_check = False
     in_select = False
     select_lines: list[int] = []
+
+    # Scope stack for DECL_NOT_AT_TOP: one bool per open scope, True once an
+    # executable statement has been seen in that scope (so a later non-inline
+    # declaration is flagged as "not at top"). Root frame = program top level.
+    scope_stack: list[bool] = [False]
+    # True while inside the continuation of a multi-line declaration statement
+    # (e.g. `DATA: lv_a TYPE i,` ... `.`). Continuation lines are part of the
+    # declaration and must not be mistaken for executable statements.
+    in_decl_cont = False
 
     # Pre-scan: names of SORTED/HASHED internal tables, so FAE_NO_DEDUP can skip
     # tables that dedup by construction (SORTED/HASHED WITH UNIQUE KEY).
@@ -215,6 +275,52 @@ def audit_source(text: str) -> list[Finding]:
             loop_depth += 1
         if RE_ENDLOOP.match(code):
             loop_depth = max(0, loop_depth - 1)
+
+        # ---- scope stack (DECL_NOT_AT_TOP) ----
+        # A declaration statement should sit at the top of its enclosing scope.
+        # We track per-scope "seen an executable statement" flags and flag a
+        # non-inline DATA/TYPES/CONSTANTS/STATICS that appears after one.
+        if in_decl_cont:
+            # Continuation of a multi-line declaration statement: not
+            # executable, never flagged. Ends when the statement terminates
+            # with a dot.
+            if code.rstrip().endswith("."):
+                in_decl_cont = False
+        elif RE_SCOPE_CLOSE.match(code):
+            if len(scope_stack) > 1:
+                scope_stack.pop()
+        elif RE_SCOPE_BRANCH.match(code):
+            # Entering an alternative branch (ELSE/ELSEIF/WHEN/CATCH/CLEANUP)
+            # starts a fresh declaration area for that branch.
+            scope_stack[-1] = False
+        elif RE_SCOPE_OPEN.match(code):
+            # Opening a nested scope is an executable step in the parent, and
+            # the new scope begins with a clean declaration area.
+            scope_stack[-1] = True
+            scope_stack.append(False)
+        elif RE_EVENT_BLOCK.match(code):
+            # Program-level event blocks start a fresh root declaration area.
+            scope_stack[0] = False
+        elif RE_DECL_NONINLINE.match(code):
+            if scope_stack[-1]:
+                findings.append(Finding(
+                    "DECL_NOT_AT_TOP", "info", "style",
+                    "声明未置于作用域顶部",
+                    f"{code.split('.', 1)[0].strip()} 出现在可执行语句之后；"
+                    "传统 ABAP 风格要求声明集中于所在作用域顶部。"
+                    "偏好内联声明（`DATA(...)`）可忽略本告警。",
+                    f"{KNOWLEDGE_REL}/abap/02_structures.md", idx))
+            if not code.rstrip().endswith("."):
+                in_decl_cont = True
+        elif not RE_NON_EXEC.match(code):
+            # Any other non-comment line is an executable statement.
+            scope_stack[-1] = True
+        else:
+            # Declaration / directive / header line. If it spans multiple lines
+            # (no trailing dot), the following lines are its continuation and
+            # are not executable.
+            if not code.rstrip().endswith("."):
+                in_decl_cont = True
 
         # ---- SELECT inside loop (nested DB access per iteration) ----
         if RE_SELECT_ANY.match(code) and loop_depth > 0:

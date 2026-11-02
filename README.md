@@ -8,7 +8,7 @@
 - ✅ `skills/sap-abap-knowledge` 已安装到 `~/.agents/skills/` 并**实测触发正常**（自动发现 + 加载 + 13/13 冒烟回归通过）
 - ✅ 原始三个仓库目录已删除，工作区只保留整合后的集合
 - ✅ 凭据/缓存文件已通过 `.gitignore` 排除
-- ✅ `skills/sap-abap-audit` 为**只读静态审查技能**（19 条规则，跨引用知识库 + 性能参考；31 条回归断言通过）
+- ✅ `skills/sap-abap-audit` 为**只读静态审查技能**（20 条规则，跨引用知识库 + 性能参考；37 条回归断言通过）
 - ⛔ 两个执行型 skill（`sap-sto-create` / `sap-stock-availability`）**已禁用**：移入 `skills/_disabled/`，SKILL.md 标注 `disabled: true`；未安装到 `~/.agents/skills/`，不会触发。需要时移回 `skills/` 并去掉标记即可恢复
 
 ## 结构
@@ -27,7 +27,7 @@ sap-knowledge/
     │       ├── abap-new-syntax/       #   7.4/7.5 新语法精华（去重）+ 2 份官方 PDF
     │       ├── modules/               #   14 个业务模块参考 + 15 个实战排查案例
     │       └── authentication/        #   SAP↔AI 对接认证参考
-    ├── sap-abap-audit/                # 审计：只读静态审查 ABAP 源码（19 条规则）
+    ├── sap-abap-audit/                # 审计：只读静态审查 ABAP 源码（20 条规则）
     └── _disabled/                     # 已禁用的执行型 skill（可逆：移回 skills/ 即恢复）
         ├── sap-sto-create/            # 执行型(写)：OData 创建 STO 调拨订单
         └── sap-stock-availability/    # 执行型(读)：REST2RFC 只读查询库存/可用性
