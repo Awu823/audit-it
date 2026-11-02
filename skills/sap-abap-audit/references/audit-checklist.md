@@ -54,6 +54,16 @@
 - **后果**：整行复制开销。
 - **整改**：`READ TABLE ... ASSIGNING <fs>`。
 
+### STANDARD 表键查找（线性）
+- **现象**：`READ TABLE <itab> WITH KEY`（自由键/`WITH TABLE KEY`）在 STANDARD 表上，无 `BINARY SEARCH`、无 `INDEX`。
+- **后果**：线性扫描 O(n)；大表显著变慢。
+- **整改**：改用 SORTED/HASHED 表、二级表键，或 `READ TABLE ... BINARY SEARCH`（需先 `SORT`）。
+
+### SORT 未显式指定排序键
+- **现象**：`SORT <itab>.`（无 `BY`，按标准键隐式排序）。
+- **后果**：隐式排序成本高，且易误用（多字符字段标准键）。
+- **整改**：显式 `SORT <itab> BY field...`。
+
 ## 3. 安全（warn / info）
 
 ### 动态 SQL / 拼接注入
