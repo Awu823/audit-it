@@ -64,6 +64,13 @@ class Finding:
 RE_SELECT_STAR = re.compile(r"\bSELECT\s+(?:[A-Za-z0-9_~*.]+\s+)*\*(?:\s|$)", re.I)
 RE_SELECT_BEGIN = re.compile(r"^\s*SELECT\b(?!\s+(?:SINGLE|COUNT|OPTIONS|UP\s+TO))", re.I)
 RE_TARGET = re.compile(r"\b(?:INTO|APPENDING)\b", re.I)
+# INTO target with an existing type should use CORRESPONDING FIELDS (by-name
+# mapping); a plain `INTO TABLE <name>` defaults to positional mapping which
+# can mis-align / drop fields. Inline `INTO @DATA(...)` is exempt (the type is
+# derived from the SELECT result, so by-name mapping is inherent).
+RE_CORRESPONDING = re.compile(r"\bCORRESPONDING\s+FIELDS\b", re.I)
+RE_INTO_TABLE_PLAIN = re.compile(
+    r"\b(?:INTO|APPENDING)\s+TABLE\s+@?(?!DATA\s*\()(\w+)", re.I)
 RE_LOOP = re.compile(r"^\s*(?:LOOP|DO|WHILE)\b", re.I)
 RE_ENDLOOP = re.compile(r"^\s*(?:ENDLOOP|ENDDO|ENDWHILE)\b", re.I)
 RE_COMMIT = re.compile(r"^\s*COMMIT\s+WORK\b(?!\s+AND\s+WAIT)", re.I)
@@ -240,6 +247,24 @@ def audit_source(text: str) -> list[Finding]:
                     "SELECT 结果未读到目标（缺 INTO 或 INTO 缺失/被省略），可能引发运行时错误或整表读入。"
                     "应始终使用 `SELECT ... INTO [CORRESPONDING] TABLE @DATA(...)` 明确目标。",
                     f"{KNOWLEDGE_REL}/abap/03_abap_sql.md", select_lines[0]))
+            # An INTO target that already has a type definition should map
+            # fields by name (CORRESPONDING FIELDS); a plain `INTO TABLE <name>`
+            # maps by position, which silently mis-aligns / drops fields when
+            # the select list and the target structure differ. Inline targets
+            # (`INTO @DATA(...)`) derive their type from the SELECT result and
+            # are exempt, as is `SELECT *` (target is usually the same table
+            # type) and statements that already use CORRESPONDING.
+            elif not RE_SELECT_STAR.search(seg) and not RE_CORRESPONDING.search(seg):
+                m_it = RE_INTO_TABLE_PLAIN.search(seg)
+                if m_it:
+                    findings.append(Finding(
+                        "INTO_NO_CORRESPONDING", "info", "correctness",
+                        "INTO 目标已有类型，建议 CORRESPONDING",
+                        f"`SELECT ... INTO TABLE {m_it.group(1)}` 目标已存在类型定义，"
+                        "字段默认按位置对应；建议 `INTO CORRESPONDING FIELDS OF TABLE` "
+                        "按字段名对应，防止错位/漏字段。内联 `INTO @DATA(...)` 由 SELECT "
+                        "推导类型，无需 CORRESPONDING。",
+                        f"{KNOWLEDGE_REL}/abap/03_abap_sql.md", select_lines[0]))
             # Only judge a missing WHERE once the statement is definitely
             # complete (terminator `.` / ENDSELECT / bail-out), so a WHERE on a
             # later line of a multi-line SELECT is not misjudged. A JOIN (incl.

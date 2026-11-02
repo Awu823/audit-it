@@ -5,12 +5,17 @@
 > 性能类问题（SELECT *、FOR ALL ENTRIES、循环内写、READ INTO、构造器）的详细整改与
 > 权威来源，另见 `references/performance-optimization.md`（完整版 `Resource/abap-performance-optimization.md`）。
 
-## 1. 正确性（error）
+## 1. 正确性（error / info）
 
 ### SELECT 缺目标子句
 - **现象**：`SELECT` 未带 `INTO` / `APPENDING ... TABLE`，或目标被省略。
 - **后果**：运行时 `cx_sy_itab_line_not_found` 或把结果读入错误对象。
 - **整改**：始终 `SELECT ... INTO [CORRESPONDING] FIELDS OF TABLE @DATA(itab)`；只取一行用 `SINGLE`。
+
+### INTO 目标已有类型未用 CORRESPONDING（info）
+- **现象**：显式列 `SELECT`（非 `SELECT *`）`INTO TABLE <itab>` 或 `INTO <wa>`，目标是**已存在类型定义**的变量/内表，且未写 `CORRESPONDING FIELDS`。
+- **后果**：字段默认按**位置**对应；当选择列顺序/字段名与目标结构不一致时，静默错位或漏字段。
+- **整改**：用 `INTO CORRESPONDING FIELDS OF TABLE <itab>` 按**字段名**对应；**内联** `INTO @DATA(...)` 由 SELECT 推导类型、天然一致，无需 CORRESPONDING。
 
 ### FOR ALL ENTRIES 未先判空
 - **现象**：`FOR ALL ENTRIES IN @itab` 前没有 `IF itab[] IS NOT INITIAL` 或 `line_exists( itab[ 1 ] )`。

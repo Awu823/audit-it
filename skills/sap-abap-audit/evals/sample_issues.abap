@@ -95,3 +95,17 @@ METHOD zdecl_if_top.
     lv_c = 1.
   ENDIF.
 ENDMETHOD.
+
+" ---- INTO_NO_CORRESPONDING ----
+
+" explicit columns + INTO TABLE with existing type -> fires
+SELECT vbeln, posnr FROM ekko INTO TABLE lt_ekko.
+
+" SELECT * + INTO TABLE existing type -> exempt (no finding)
+SELECT * FROM ekko INTO TABLE lt_ekko.
+
+" inline INTO TABLE @DATA(...) -> exempt (type derived from SELECT)
+SELECT vbeln, posnr FROM ekko INTO TABLE @DATA(lt_inline).
+
+" already uses CORRESPONDING FIELDS -> exempt
+SELECT vbeln, posnr FROM ekko INTO CORRESPONDING FIELDS OF TABLE lt_ekko.
