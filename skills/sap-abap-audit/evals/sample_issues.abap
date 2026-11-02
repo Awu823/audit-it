@@ -64,3 +64,34 @@ SORT lt_ekko BY ebeln.
 
 " SORT without explicit key -> SORT_WITHOUT_KEY
 SORT lt_ekko.
+
+" ---- DECL_NOT_AT_TOP ----
+
+" METHOD scope: declaration at top -> must NOT fire
+METHOD zdecl_top.
+  DATA lv_top TYPE i.
+  lv_top = 1.
+  WRITE lv_top.
+ENDMETHOD.
+
+" METHOD scope: inline DATA(...) after exec -> must NOT fire (exempt)
+METHOD zdecl_inline.
+  lv_x = 1.
+  DATA(lv_has_biz_error) = lv_x.
+  WRITE lv_has_biz_error.
+ENDMETHOD.
+
+" METHOD scope: non-inline declaration after exec -> fires
+METHOD zdecl_mid.
+  lv_a = 1.
+  DATA lv_b TYPE i.
+  lv_b = 2.
+ENDMETHOD.
+
+" nested block: declaration at top of IF -> must NOT fire
+METHOD zdecl_if_top.
+  IF lv_a > 0.
+    DATA lv_c TYPE i.
+    lv_c = 1.
+  ENDIF.
+ENDMETHOD.

@@ -44,6 +44,8 @@ EXPECTED = [
     ("SELECT_IN_LOOP", 50),
     ("STANDARD_TABLE_LINEAR_READ", 60),
     ("SORT_WITHOUT_KEY", 66),
+    ("DECL_NOT_AT_TOP", 29),  # program-level decl after executable SELECT
+    ("DECL_NOT_AT_TOP", 87),  # method-level decl after executable assignment
 ]
 
 # These should NOT fire (false-positive guards) on the same sample
@@ -57,6 +59,10 @@ NOT_EXPECTED = [
     ("SELECT_NO_WHERE", 54),  # JOIN-based select without WHERE -> JOIN filters
     ("STANDARD_TABLE_LINEAR_READ", 37),  # READ ... INDEX 1 -> INDEX excluded
     ("SORT_WITHOUT_KEY", 63), # explicit sort key (BY) -> no implicit-sort finding
+    ("DECL_NOT_AT_TOP", 11),  # program decl in declaration part (top) -> no finding
+    ("DECL_NOT_AT_TOP", 72),  # method decl at very top -> no finding
+    ("DECL_NOT_AT_TOP", 80),  # inline DATA(...) exempt -> no finding
+    ("DECL_NOT_AT_TOP", 94),  # decl at top of IF block -> no finding
 ]
 
 

@@ -11,8 +11,10 @@ description: |
   loops, FOR ALL ENTRIES without empty check or without dedup, COMMIT WORK inside
   loops, dynamic SQL / injection risk, legacy TABLES / PERFORM / CONCATENATE /
   APPEND, READ TABLE INTO vs field-symbol, STANDARD-table linear key lookup,
-  SORT without explicit key, MODIFY/INSERT in loops, missing AUTHORITY-CHECK on
-  sensitive tables, TODO/FIXME markers, over-long lines.
+  SORT without explicit key, MODIFY/INSERT in loops, non-inline declarations
+  not placed at the top of their scope (inline DATA(...)/TYPES(...) exempt),
+  missing AUTHORITY-CHECK on sensitive tables, TODO/FIXME markers, over-long
+  lines.
   Do NOT use for: auditing non-ABAP languages (Java, JS, Python), or running the code
   (this is read-only static analysis — no compile, no SAP connection).
 license: MIT
@@ -55,7 +57,7 @@ python3 scripts/audit_abap.py <file|dir> --min-severity warn
 
 退出码：`0` 无 error/warn；`2` 有 warning；`3` 有 error。
 
-## 规则表（19 条）
+## 规则表（20 条）
 
 | 规则 | 级别 | 类别 | 检测点 | 知识库参考 |
 |---|---|---|---|---|
@@ -76,6 +78,7 @@ python3 scripts/audit_abap.py <file|dir> --min-severity warn
 | `STANDARD_TABLE_LINEAR_READ` | info | performance | STANDARD 表 `READ TABLE ... WITH KEY` 线性查找 | `references/performance-optimization.md` |
 | `SORT_WITHOUT_KEY` | info | performance | `SORT` 未显式指定排序键（隐式标准键） | `references/performance-optimization.md` |
 | `NO_AUTHORITY_CHECK` | info | security | 敏感表读取未见 `AUTHORITY-CHECK` | `25_authorization_checks.md` |
+| `DECL_NOT_AT_TOP` | info | style | 非内联 `DATA`/`TYPES`/`CONSTANTS`/`STATICS` 出现在可执行语句之后（未置于作用域顶部） | `02_structures.md` |
 | `TODO_FIXME` | info | quality | `TODO`/`FIXME`/`XXX` 遗留标记 | `modules/abap-dev.md` |
 | `LINE_TOO_LONG` | info | style | 行 > 120 字符 | `13_program_flow_logic.md` |
 
