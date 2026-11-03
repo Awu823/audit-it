@@ -58,7 +58,7 @@ python3 scripts/audit_abap.py <file|dir> --min-severity warn
 
 退出码：`0` 无 error/warn；`2` 有 warning；`3` 有 error。
 
-## 规则表（21 条）
+## 规则表（22 条）
 
 | 规则 | 级别 | 类别 | 检测点 | 知识库参考 |
 |---|---|---|---|---|
@@ -83,6 +83,7 @@ python3 scripts/audit_abap.py <file|dir> --min-severity warn
 | `DECL_NOT_AT_TOP` | info | style | 非内联 `DATA`/`TYPES`/`CONSTANTS`/`STATICS` 出现在可执行语句之后（未置于作用域顶部） | `02_structures.md` |
 | `TODO_FIXME` | info | quality | `TODO`/`FIXME`/`XXX` 遗留标记 | `modules/abap-dev.md` |
 | `LINE_TOO_LONG` | info | style | 行 > 120 字符 | `13_program_flow_logic.md` |
+| `GET_RUN_TIME_COARSE` | info | performance | `GET RUN TIME` 秒级计时，大基准场景建议 `utclong_current( )` | `large-data/profilers.md` |
 
 > 规则为**启发式**行级检测，可能有个别误报/漏报；发现项用于**引导人工复核**，不是编译错误。
 > 建议先跑 `--min-severity warn` 聚焦高价值问题。

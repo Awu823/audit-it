@@ -8,7 +8,8 @@
 - ✅ `skills/sap-abap-knowledge` 已安装到 `~/.agents/skills/` 并**实测触发正常**（自动发现 + 加载 + 13/13 冒烟回归通过）
 - ✅ 原始三个仓库目录已删除，工作区只保留整合后的集合
 - ✅ 凭据/缓存文件已通过 `.gitignore` 排除
-- ✅ `skills/sap-abap-audit` 为**只读静态审查技能**（21 条规则，跨引用知识库 + 性能参考；41 条回归断言通过）
+- ✅ `skills/sap-abap-audit` 为**只读静态审查技能**（22 条规则，跨引用知识库 + 性能参考；42 条回归断言通过）
+- ✅ `skills/sap-abap-knowledge` 新增 `references/large-data/` 性能/大数据量目录（4 文件：内表实测决策、大表 DB 写法、并行处理、剖析定位），来源含 GitHub `benmeijs/ABAP_ITAB`、`pokrakam/abap_itab_perf` 与官方 cheat sheets（17/17 冒烟回归通过）
 - ⛔ 两个执行型 skill（`sap-sto-create` / `sap-stock-availability`）**已禁用**：移入 `skills/_disabled/`，SKILL.md 标注 `disabled: true`；未安装到 `~/.agents/skills/`，不会触发。需要时移回 `skills/` 并去掉标记即可恢复
 
 ## 结构
@@ -26,8 +27,9 @@ sap-knowledge/
     │       ├── abap/                  #   官方 ABAP Cheat Sheets（37 主题 + 示例 + 插图）
     │       ├── abap-new-syntax/       #   7.4/7.5 新语法精华（去重）+ 2 份官方 PDF
     │       ├── modules/               #   14 个业务模块参考 + 15 个实战排查案例
+    │       ├── large-data/            #   性能/大数据量处理（内表实测决策 + 大表 DB 写法 + 并行 + 剖析定位）
     │       └── authentication/        #   SAP↔AI 对接认证参考
-    ├── sap-abap-audit/                # 审计：只读静态审查 ABAP 源码（21 条规则）
+    ├── sap-abap-audit/                # 审计：只读静态审查 ABAP 源码（22 条规则）
     └── _disabled/                     # 已禁用的执行型 skill（可逆：移回 skills/ 即恢复）
         ├── sap-sto-create/            # 执行型(写)：OData 创建 STO 调拨订单
         └── sap-stock-availability/    # 执行型(读)：REST2RFC 只读查询库存/可用性
@@ -47,10 +49,12 @@ Claude Code / OpenCode 会自动发现并加载。对话中出现 SAP/ABAP 话�
 
 | 来源 | 去向 |
 |---|---|
-| 官方 `abap-cheat-sheets`（SAP-samples） | `sap-abap-knowledge/references/abap/` |
+| 官方 `abap-cheat-sheets`（SAP-samples） | `sap-abap-knowledge/references/abap/` + `references/large-data/`（性能部分） |
 | `SAP-ABAP-7.5-syntax-main`（个人笔记） | `sap-abap-knowledge/references/abap-new-syntax/`（去重提炼） |
 | `sap-functional-skill` 知识型 `sap-trench-skill` | `sap-abap-knowledge/references/modules/` + `authentication/` |
 | `sap-functional-skill` 执行型 `sap-sto-create` / `sap-stock-availability` | `skills/_disabled/`（原样，已禁用） |
+| `benmeijs/ABAP_ITAB`（GitHub，内表嵌套循环/类型实测） | `sap-abap-knowledge/references/large-data/internal-table-perf.md` |
+| `pokrakam/abap_itab_perf`（GitHub，100 万次查找基准） | `sap-abap-knowledge/references/large-data/internal-table-perf.md` |
 
 ## 自检 / 回归
 

@@ -101,6 +101,11 @@ RE_BINARY_SEARCH = re.compile(r"\bBINARY\s+SEARCH\b", re.I)
 RE_INDEX = re.compile(r"\bINDEX\b", re.I)
 RE_SORT_NOKEY = re.compile(r"^\s*SORT\s+(\w+)\s*(?:DESCENDING|ASCENDING)?\s*\.\s*$", re.I)
 
+# ---- NEW performance rules from GitHub large-data research ----
+# 1) GET RUN TIME for large-scale timing; utclong_current( ) is the official
+#    alternative in the 32 cheat sheet's executable example.
+RE_GET_RUN_TIME = re.compile(r"^\s*GET\s+RUN\s+TIME\b", re.I)
+
 # ---- DECL_NOT_AT_TOP: declaration placement in scope ----
 # Non-inline declaration statements that traditional ABAP style requires to sit
 # at the top of their enclosing scope. `DATA(...)` / `TYPES(...)` inline
@@ -483,6 +488,17 @@ def audit_source(text: str) -> list[Finding]:
                     f"`READ TABLE {itab}` 用 WITH KEY 在 STANDARD 表上线性查找（O(n)）；"
                     f"建议改用 SORTED/HASHED 表、二级表键，或 `BINARY SEARCH`（需先 SORT）。",
                     PERF_REF, idx))
+
+        # ---- NEW: GET RUN TIME — coarse timing; recommend utclong for large data ----
+        if RE_GET_RUN_TIME.match(code):
+            findings.append(Finding(
+                "GET_RUN_TIME_COARSE", "info", "performance",
+                "GET RUN TIME 精度低（秒级），大基准建议 utclong",
+                "`GET RUN TIME` 只能取到秒级整数，做大数据量基准测试时精度不足；"
+                "官方 32 号 cheat sheet 的可执行示例用 `utclong_current( )` + "
+                "`cl_abap_utclong=>diff( )`（utclong 类型，微秒级）。"
+                "（GitHub `pokrakam/abap_itab_perf` 基准亦用 `GET RUN TIME` 做相对对比。）",
+                f"{KNOWLEDGE_REL}/large-data/profilers.md", idx))
 
         # ---- SORT without an explicit sort key (implicit standard-key sort) ----
         m_sort = RE_SORT_NOKEY.match(code)

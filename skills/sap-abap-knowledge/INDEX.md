@@ -87,11 +87,31 @@
 | `06-client-patterns.md` | 客户端模式 |
 | `07-odata-services.md` | OData 服务 |
 
-## 5. 评测
+## 5. 性能 / 大数据量处理 — `references/large-data/`
 
-- `evals/golden-set.yaml` — 源自原 sap-trench-skill 的 7 条评测问答（功能/实战类）。
+| 文件 | 内容 | 来源 |
+|---|---|---|
+| `internal-table-perf.md` | 大内表决策表（HASHED vs SORTED vs STANDARD）、嵌套循环 7 种方式实测、并行 tabix、`line_exists` 基准、内存管理 | `benmeijs/ABAP_ITAB` + `pokrakam/abap_itab_perf` + 官方 cheat sheet |
+| `database-access.md` | 大表 SELECT 模式（只取所需列、`FIELDS`、`JOIN`、聚合下推、内表 JOIN 7.52+）、批量 UPDATE、`FOR ALL ENTRIES` 坑 | 官方 `03_ABAP_SQL.md` / `32_Performance_Notes.md` |
+| `parallel-processing.md` | `CL_ABAP_PARALLEL` 并行框架、大内表分块、后台 job 替代、CDS push-down | 官方 cheat sheet `32` § Parallel + 社区 |
+| `profilers.md` | ST05 / SAT / ABAP Trace / Memory Inspector 定位流程 + 官方推荐 profile 工具 + 社区参考 | 官方 cheat sheet `32` + teched2025-DT266 |
+
+## 6. 评测
+
+- `evals/golden-set.yaml` — 源自原 sap-trench-skill 的 7 条评测问答（功能/实战类）
+  + 4 条性能/大数据量评测（路由到 `references/large-data/`）。
 
 ## 关联执行型 Skill（独立目录）
+
+## 数据来源（GitHub / 官方）
+
+| 来源 | 去向 |
+|---|---|
+| `SAP-samples/abap-cheat-sheets`（官方 ABAP 性能/SQL/内表 cheat sheets） | `references/abap/32_performance_notes.md` / `references/large-data/` |
+| `benmeijs/ABAP_ITAB`（内表性能实测：嵌套循环 / 内表类型） | `references/large-data/internal-table-perf.md` §2 |
+| `pokrakam/abap_itab_perf`（100 万次查找基准：存在性检查 vs READ vs SELECT） | `references/large-data/internal-table-perf.md` §3 |
+| `SAP-samples/abap-cheat-sheets` `32_Performance_Notes.md` 可执行示例（`zcl_demo_abap`） | `references/abap/32_performance_notes.md` + `references/large-data/profilers.md` §7 |
+
 
 | Skill | 目录 | 类型 |
 |---|---|---|

@@ -10765,6 +10765,10 @@ ENDCLASS.
 ## More Information
 Topic [Internal Tables](https://help.sap.com/docs/abap-cloud/abap-keyword/internal-tables-itab) in the ABAP Keyword Documentation.
 
+- 性能/大数据量场景（嵌套循环、HASHED vs SORTED vs STANDARD、`line_exists` 基准、二级表键、内存管理）见
+  `../large-data/internal-table-perf.md`（含实测数字与决策表）。
+- 大表 DB 侧写法（`SELECT` 模式 / `JOIN` / 聚合下推）见 `../large-data/database-access.md`。
+
 ## Executable Example
 [zcl_demo_abap_internal_tables](./src/zcl_demo_abap_internal_tables.clas.abap)
 
