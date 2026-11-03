@@ -47,6 +47,7 @@ EXPECTED = [
     ("DECL_NOT_AT_TOP", 29),  # program-level decl after executable SELECT
     ("DECL_NOT_AT_TOP", 87),  # method-level decl after executable assignment
     ("INTO_NO_CORRESPONDING", 102),  # existing-typed INTO TABLE, explicit cols
+    ("GET_RUN_TIME_COARSE", 116),    # legacy second-resolution timing
 ]
 
 # These should NOT fire (false-positive guards) on the same sample

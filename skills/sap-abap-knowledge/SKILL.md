@@ -17,7 +17,9 @@ description: |
   constructor, value operator, reduce, for operator, corresponding, conv, new, cond, inline declaration,
   account determination, pricing procedure, delivery, ATP, MRP, BOM, production order, goods receipt,
   goods issue, WM transfer order, maintenance order, inspection lot, vehicle management, VELO, IS-AUTO,
-  PI channel, Proxy class, error 51, dump analysis, performance tuning, ST05, SM50, SM66.
+  PI channel, Proxy class, error 51, dump analysis, performance tuning, ST05, SM50, SM66,
+  big data, large table, internal table performance, nested loop, HASHED table, secondary table key,
+  CL_ABAP_PARALLEL, parallel processing, FOR ALL ENTRIES, JOIN, benchmark, profiler.
   Do NOT use for: non-SAP ERP systems (Oracle EBS, Dynamics), generic SQL or database questions unrelated to SAP tables.
 license: MIT
 allowed-tools: [Read]
@@ -29,6 +31,8 @@ metadata:
     - "https://github.com/SAP-samples/abap-cheat-sheets"
     - "https://help.sap.com"
     - "https://community.sap.com"
+    - "https://github.com/benmeijs/ABAP_ITAB"
+    - "https://github.com/pokrakam/abap_itab_perf"
 ---
 
 # SAP ABAP Knowledge Skill
@@ -38,6 +42,7 @@ metadata:
 - **ABAP 语法/技术**：官方 SAP ABAP Cheat Sheets（37 个主题）+ ABAP 7.4/7.5 新语法精华
 - **SAP 功能/实战**：14 个业务模块参考 + 15 个一线排查案例（CASE-001~015）
 - **对接认证**：SAP ↔ AI 对接（CLI / MCP / OData）认证参考手册
+- **性能 / 大数据量处理**（`references/large-data/`）：内表实测决策 + DB 侧写法 + 并行 + 剖析定位
 
 ## 使用方式
 
@@ -66,6 +71,7 @@ metadata:
 | 权限检查 / ABAP 字典 | `25_authorization_checks.md`, `26_abap_dictionary.md` |
 | 生成式 AI | `30_generative_ai.md` |
 | 性能优化 / BAdI | `32_performance_notes.md`, `35_badis.md` |
+| 性能 / 大数据量处理（内表实测 / DB 侧 / 并行 / 剖析工具） | `../large-data/internal-table-perf.md`, `../large-data/database-access.md`, `../large-data/parallel-processing.md`, `../large-data/profilers.md` |
 | 全部 cheat sheet 概览与示例分支说明 | `readme.md` |
 
 ### B. ABAP 7.4 / 7.5 新语法精华（去重后）
@@ -106,6 +112,24 @@ metadata:
 | 边界网关模式 | `05-edge-patterns.md` |
 | 客户端模式 | `06-client-patterns.md` |
 | OData 服务 | `07-odata-services.md` |
+
+### E. 性能 / 大数据量处理（`references/large-data/`，GitHub 检索补充）
+
+> 与 `references/abap/32_performance_notes.md`（官方 cheat sheet 逐条说明）互补：
+> 32 号文档讲"怎么改"，本目录讲"大数据量场景怎么决策 + 实测数字 + 定位工具"。
+> 来源：`benmeijs/ABAP_ITAB`（嵌套循环/内表类型实测）、`pokrakam/abap_itab_perf`
+> （100 万次查找基准）、官方 `SAP-samples/abap-cheat-sheets`（32 号性能说明 + 可执行示例）。
+
+| 问题类型 | 文件（`references/large-data/`） |
+|---|---|
+| 大内表嵌套循环 / HASHED vs SORTED vs STANDARD 决策 / 二级表键 / 内存管理 | `internal-table-perf.md` |
+| 大表 SELECT 模式（只取所需列、WHERE 索引、JOIN、聚合下推）/ 大内表 JOIN（7.52+）/ 批量 UPDATE | `database-access.md` |
+| 并行处理（CL_ABAP_PARALLEL）/ 大内表分块 / 后台 job 替代 / CDS push-down | `parallel-processing.md` |
+| 性能剖析定位（ST05 / SAT / ABAP Trace / Memory Inspector）/ 官方推荐工具 / 定位流程 | `profilers.md` |
+
+> 触发词：性能、优化、大表、千万行、大数据量、内表查找、嵌套循环、JOIN、FOR ALL ENTRIES、
+> SELECT 慢、SQL 慢、内存、并行、CL_ABAP_PARALLEL、分块、后台 job、ST05、SAT、profiler、
+> 定位瓶颈、运行时间、runtime、benchmark。
 
 2. **加载对应文件后**，按以下结构组织答案（适用于业务/实战类）：
 

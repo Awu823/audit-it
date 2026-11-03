@@ -24,6 +24,7 @@
 | **B. 7.4/7.5 新语法** | SELECT FIELDS、SEGMENT、COMMIT WORK AND WAIT、OpenSQL vs NativeSQL、REST 调用、JSON 转换、Eclipse 快捷键、MIGO/MIRO 骨架 | 中文 | `references/abap-new-syntax/` |
 | **C. 业务模块与实战** | MM、SD、FI/CO、PP、WM、PM、QM、VMS、集成(PI/PO/IDoc/Proxy/OData)、权限、打印、事务码速查、15 个排查案例 | 中文 | `references/modules/` |
 | **D. 对接认证** | Basic、SPNEGO、X.509、OIDC/OAuth2、边界网关、客户端模式、OData 服务 | 中文 | `references/authentication/` |
+| **E. 性能 / 大数据量** | 大内表实测决策（HASHED vs SORTED / 嵌套循环 / 存在性检查 / 内存）、大表 DB 侧写法、`CL_ABAP_PARALLEL` 并行、剖析定位（ST05/SAT） | 中文 | `references/large-data/` |
 
 **主要触发关键词**：`SAP` `ABAP` `ECC` `S/4HANA` `BAdI` `BAPI` `IDoc` `OData` `Proxy` `STO` `AMDP` `CDS` `RAP` `EML` `BDL` `LUW`、常用事务码（`ME21N` `MIGO` `VA01` `VL01N` `FB01` `CO01` `LT01` `IW31` `QA01`）、`AUTHORITY-CHECK` `SU53`、ATP/MRP/BOM/定价/科目确定、以及任何表名/类名/模糊报错。
 
@@ -60,6 +61,11 @@ sap-abap-knowledge/
     │   ├── abap-dev.md  mm.md  sd.md  fico.md  pp.md  wm.md  pm.md
     │   ├── qm.md  vms.md  integration.md  auth.md  print.md
     │   ├── reference-tables.md  troubleshooting.md
+    ├── large-data/              # 性能 / 大数据量处理（中文，GitHub 检索补充）
+    │   ├── internal-table-perf.md   # 大内表实测决策 + 嵌套循环 + 存在性检查基准
+    │   ├── database-access.md       # 大表 SELECT 模式 / JOIN / 批量 UPDATE
+    │   ├── parallel-processing.md   # CL_ABAP_PARALLEL / 分块 / 后台 job
+    │   └── profilers.md            # ST05 / SAT / ABAP Trace 定位流程
     └── authentication/         # SAP ↔ AI 对接认证参考
         ├── README.md
         └── 01-basic-auth.md ... 07-odata-services.md
@@ -79,6 +85,9 @@ sap-abap-knowledge/
 | *"ABAP 7.5 的 SELECT FIELDS 怎么用？"* | B 新语法 → `references/abap-new-syntax/README.md` |
 | *"CDS 视图里怎么定义 association？"* | A 语法 → `references/abap/15_cds_view_entities.md` |
 | *"内表怎么按字段分组统计？"* | A 语法 → `references/abap/11_internal_tables_grouping.md` |
+| *"千万行大内表嵌套循环按 key 匹配怎么最快？"* | E 性能 → `references/large-data/internal-table-perf.md` |
+| *"大表 SELECT 只取 3 列怎么写快？"* | E 性能 → `references/large-data/database-access.md` |
+| *"ST05 / SAT 怎么定位性能瓶颈？"* | E 性能 → `references/large-data/profilers.md` |
 | *"OData 对接用 OAuth2 怎么配？"* | D 认证 → `references/authentication/04-oidc-oauth2.md` |
 | *"BAdI 实现步骤"* | C 开发 → `references/modules/abap-dev.md` |
 | *"STO 调拨订单的科目确定怎么配？"* | C 模块 → `references/modules/mm.md` |
@@ -111,10 +120,14 @@ sap-abap-knowledge/
 
 ## 评测
 
-自检用例见 `evals/golden-set.yaml`（7 条问答，源自原 sap-trench-skill），可用来验证触发与路由是否正常。
+自检用例见 `evals/golden-set.yaml`（11 条问答：7 条功能/实战源自原 sap-trench-skill + 4 条性能/大数据量），可用来验证触发与路由是否正常。
 
 ## 来源与许可
 
 - Cheat sheets：© SAP SE，[`SAP-samples/abap-cheat-sheets`](https://github.com/SAP-samples/abap-cheat-sheets)
 - 模块/实战/认证：MIT，[`shrek-abaper/sap-functional-skill`](https://github.com/shrek-abaper/sap-functional-skill)
+- 性能/大数据量（`references/large-data/`）：MIT，
+  [`benmeijs/ABAP_ITAB`](https://github.com/benmeijs/ABAP_ITAB)（内表嵌套循环/类型实测）+
+  [`pokrakam/abap_itab_perf`](https://github.com/pokrakam/abap_itab_perf)（100 万次查找基准）
+  + 官方 cheat sheet（32 号性能说明 + 可执行示例）
 - 本合并产物：MIT —— 知识应该流动，不应该沉睡。

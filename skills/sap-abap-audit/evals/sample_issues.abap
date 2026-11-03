@@ -109,3 +109,9 @@ SELECT vbeln, posnr FROM ekko INTO TABLE @DATA(lt_inline).
 
 " already uses CORRESPONDING FIELDS -> exempt
 SELECT vbeln, posnr FROM ekko INTO CORRESPONDING FIELDS OF TABLE lt_ekko.
+
+" ---- NEW: GET_RUN_TIME_COARSE ----
+
+" Legacy timing: fires GET_RUN_TIME_COARSE
+GET RUN TIME.
+GET RUN TIME.

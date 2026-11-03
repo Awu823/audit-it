@@ -79,3 +79,27 @@
   expected_contains: ["OAuth"]
   expected_skill_used: true
   tags: [integration, auth, oauth2]
+
+- question: "ABAP 大内表里嵌套循环按 key 匹配 N×M 行，怎么最快？"
+  route: references/large-data/internal-table-perf.md
+  expected_contains: ["HASHED", "SORTED", "二级表键"]
+  expected_skill_used: true
+  tags: [abap, itab, perf, large-data]
+
+- question: "千万行大表 SELECT 要读 3 列，怎么写快？"
+  route: references/large-data/database-access.md
+  expected_contains: ["FIELDS", "WHERE", "JOIN"]
+  expected_skill_used: true
+  tags: [abap, sql, large-data]
+
+- question: "ABAP 大表聚合计算 + 循环内逐行写，怎么并行化？"
+  route: references/large-data/parallel-processing.md
+  expected_contains: ["CL_ABAP_PARALLEL", "分块"]
+  expected_skill_used: true
+  tags: [abap, parallel, large-data]
+
+- question: "用 ST05 / SAT / ABAP Trace 怎么定位 ABAP 程序性能瓶颈？"
+  route: references/large-data/profilers.md
+  expected_contains: ["ST05", "SAT", "ABAP Trace"]
+  expected_skill_used: true
+  tags: [abap, perf, profiler, large-data]
