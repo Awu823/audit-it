@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions targetNamespace="http://www.aif.com/MDR/*"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://sap.com/xi/ARBCIG1"
+    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+    xmlns:n1="http://www.aif.com/MDR/bom">
+    <wsdl:documentation>
+        <sidl:sidl xmlns:sidl="http://www.sap.com/2007/03/sidl" />
+    </wsdl:documentation>
+    <wsp:UsingPolicy wsdl:required="true" />
+    <wsp:Policy wsu:Id="IF_IF_BOMReplicateReq_Async_Out">
+        <sapsession:Session xmlns:sapsession="http://www.sap.com/webas/630/soap/features/session/">
+            <sapsession:enableSession>false</sapsession:enableSession>
+        </sapsession:Session>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="OP_IF_OP_BOMReplicateReq_Async_Out">
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">true</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">
+            false</sapblock:enableBlocking>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">
+            yes</saptrhnw05:required>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">true</saprmnw05:enableWSRM>
+    </wsp:Policy>
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://www.aif.com/MDR/bom"
+            xmlns="http://www.aif.com/MDR/bom"
+            xmlns:xi0="http://www.aif.com/MDR/bom">
+            <xsd:element name="BOMReplicateRequest" type="BOMReplicateRequest" />
+            <xsd:simpleType name="AgencyIdentificationCode">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="3" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:complexType name="Amount">
+                <xsd:simpleContent>
+                    <xsd:extension base="AmountContent">
+                        <xsd:attribute name="currencyCode" use="required" type="CurrencyCode" />
+                    </xsd:extension>
+                </xsd:simpleContent>
+            </xsd:complexType>
+            <xsd:simpleType name="AmountContent">
+                <xsd:restriction base="xsd:decimal">
+                    <xsd:totalDigits value="28" />
+                    <xsd:fractionDigits value="6" />
+                    <xsd:maxInclusive value="9999999999999999999999.999999" />
+                    <xsd:minInclusive value="-9999999999999999999999.999999" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:complexType name="BOMMessageHeader">
+                <xsd:sequence>
+                    <xsd:element name="UUID" minOccurs="0" form="qualified" type="UUID" />
+                    <xsd:element name="ERPID" form="qualified" type="LanguageIndependentLongText" />
+                    <xsd:element name="RealmName" form="qualified"
+                        type="LanguageIndependentMediumText" />
+                    <xsd:element name="RealmId" minOccurs="0" form="qualified"
+                        type="LanguageIndependentMediumText" />
+                    <xsd:element name="Solution" form="qualified" type="LanguageIndependentLongText" />
+                    <xsd:element name="InterfaceName" minOccurs="0" form="qualified"
+                        type="LanguageIndependentLongText" />
+                    <xsd:element name="FullLoad" form="qualified" type="xsd:boolean" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="BOMReplicateRequest">
+                <xsd:sequence>
+                    <xsd:element name="MessageHeader" form="qualified" type="BOMMessageHeader" />
+                    <xsd:element name="BOM" minOccurs="0" form="qualified">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="BOMHeader" minOccurs="0" form="qualified">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Material" form="qualified"
+                                                type="NOSCProductInternalID" />
+                                            <xsd:element name="BOMCategory" form="qualified"
+                                                type="Code" />
+                                            <xsd:element name="BOMNo" form="qualified"
+                                                type="BillOfMaterialInternalID" />
+                                            <xsd:element name="AlternativeBOM" form="qualified"
+                                                type="OperationAlternativeID" />
+                                            <xsd:element name="Usage" form="qualified" type="Code" />
+                                            <xsd:element name="ValidFromDate" form="qualified"
+                                                type="Date" />
+                                            <xsd:element name="ValidToDate" form="qualified"
+                                                type="Date" />
+                                            <xsd:element name="BOMStatus" form="qualified"
+                                                type="IntegerValue" />
+                                            <xsd:element name="BaseQuantity" form="qualified"
+                                                type="Quantity" />
+                                            <xsd:element name="BOMGroup" minOccurs="0"
+                                                form="qualified" type="BillOfMaterialGroupID" />
+                                            <xsd:element name="BOMText" minOccurs="0"
+                                                form="qualified"
+                                                type="LanguageIndependentMediumText" />
+                                            <xsd:element name="AlternativeBOMText" minOccurs="0"
+                                                form="qualified"
+                                                type="LanguageIndependentMediumText" />
+                                            <xsd:element name="BOMDeletionFlag" minOccurs="0"
+                                                form="qualified" type="Code" />
+                                            <xsd:element name="CreationDate" form="qualified"
+                                                type="Date" />
+                                            <xsd:element name="ChangeDate" minOccurs="0"
+                                                form="qualified" type="Date" />
+                                            <xsd:element name="ChangeNo" minOccurs="0"
+                                                form="qualified" type="NOSCChangeNumber" />
+                                            <xsd:element name="ChangeNumberTo" minOccurs="0"
+                                                form="qualified" type="NOSCChangeNumber" />
+                                            <xsd:element name="TechnicalType" minOccurs="0"
+                                                form="qualified" type="Code" />
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="BOMPlant" minOccurs="0" form="qualified"
+                                    maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Plant" minOccurs="0" form="qualified"
+                                                type="NOSCPlantID" />
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="BOMComponent" minOccurs="0" form="qualified"
+                                    maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Material" form="qualified"
+                                                type="NOSCProductInternalID" />
+                                            <xsd:element name="ItemCategory" form="qualified"
+                                                type="Code" />
+                                            <xsd:element name="ItemGroup" minOccurs="0"
+                                                form="qualified" type="BillOfMaterialItemGroupID" />
+                                            <xsd:element name="ItemNumber" form="qualified"
+                                                type="BillOfMaterialItemID" />
+                                            <xsd:element name="ItemNodeNumber" form="qualified"
+                                                type="BillOfMaterialItemID" />
+                                            <xsd:element name="InternalCounter" minOccurs="0"
+                                                form="qualified" type="IntegerValue" />
+                                            <xsd:element name="PMAssemblyIndicator" minOccurs="0"
+                                                form="qualified" type="Code" />
+                                            <xsd:element name="ValidFromDate" form="qualified"
+                                                type="Date" />
+                                            <xsd:element name="ValidToDate" form="qualified"
+                                                type="Date" />
+                                            <xsd:element name="ItemText1" minOccurs="0"
+                                                form="qualified"
+                                                type="LanguageIndependentMediumText" />
+                                            <xsd:element name="ItemText2" minOccurs="0"
+                                                form="qualified"
+                                                type="LanguageIndependentMediumText" />
+                                            <xsd:element name="SortString" minOccurs="0"
+                                                form="qualified" type="LanguageIndependentShortText" />
+                                            <xsd:element name="MaterialProvisionIndicator"
+                                                minOccurs="0" form="qualified" type="Code" />
+                                            <xsd:element name="Priority" minOccurs="0"
+                                                form="qualified" type="DeliveryPriorityCode" />
+                                            <xsd:element name="Strategy" minOccurs="0"
+                                                form="qualified" type="Code" />
+                                            <xsd:element name="UsageProbability" minOccurs="0"
+                                                form="qualified" type="UsageProbability" />
+                                            <xsd:element name="ReferenceDesignator" minOccurs="0"
+                                                form="qualified"
+                                                type="LanguageIndependentMediumName" />
+                                            <xsd:element name="FixedQty" minOccurs="0"
+                                                form="qualified" type="Code" />
+                                            <xsd:element name="BOMRecursiveIndicator" minOccurs="0"
+                                                form="qualified" type="Code" />
+                                            <xsd:element name="DeletionIndicator" minOccurs="0"
+                                                form="qualified" type="Code" />
+                                            <xsd:element name="CreationDate" form="qualified"
+                                                type="Date" />
+                                            <xsd:element name="ChangeDate" minOccurs="0"
+                                                form="qualified" type="Date" />
+                                            <xsd:element name="ChangeNumber" minOccurs="0"
+                                                form="qualified" type="NOSCChangeNumber" />
+                                            <xsd:element name="ChangeNumberTo" minOccurs="0"
+                                                form="qualified" type="NOSCChangeNumber" />
+                                            <xsd:element name="RequiredComponent" minOccurs="0"
+                                                form="qualified" type="Code" />
+                                            <xsd:element name="Price" form="qualified" type="Price" />
+                                            <xsd:element name="PriceUnit" form="qualified"
+                                                type="LanguageIndependentShortText" />
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="DeletedData" minOccurs="0" form="qualified">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="DeletedBOM" minOccurs="0"
+                                                form="qualified">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="Material"
+                                                            form="qualified"
+                                                            type="NOSCProductInternalID" />
+                                                        <xsd:element name="BOMNo" form="qualified"
+                                                            type="BillOfMaterialInternalID" />
+                                                        <xsd:element name="AlternativeBOM"
+                                                            form="qualified"
+                                                            type="OperationAlternativeID" />
+                                                        <xsd:element name="Usage" form="qualified"
+                                                            type="Code" />
+                                                        <xsd:element name="ValidFromDate"
+                                                            minOccurs="0" form="qualified"
+                                                            type="Date" />
+                                                        <xsd:element name="ValidToDate"
+                                                            minOccurs="0" form="qualified"
+                                                            type="Date" />
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="DeletedPlant" minOccurs="0"
+                                                form="qualified" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="Plant" minOccurs="0"
+                                                            form="qualified" type="NOSCPlantID" />
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="DeletedBOMComponent" minOccurs="0"
+                                                form="qualified" maxOccurs="unbounded">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="Material" minOccurs="0"
+                                                            form="qualified"
+                                                            type="NOSCProductInternalID" />
+                                                        <xsd:element name="ItemNodeNumber"
+                                                            form="qualified"
+                                                            type="BillOfMaterialItemID" />
+                                                        <xsd:element name="ValidFromDate"
+                                                            minOccurs="0" form="qualified"
+                                                            type="Date" />
+                                                        <xsd:element name="ValidToDate"
+                                                            minOccurs="0" form="qualified"
+                                                            type="Date" />
+                                                        <xsd:element name="ChangeNo" minOccurs="0"
+                                                            form="qualified" type="NOSCChangeNumber" />
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:simpleType name="BillOfMaterialGroupID">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="40" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:complexType name="BillOfMaterialInternalID">
+                <xsd:simpleContent>
+                    <xsd:extension base="BillOfMaterialInternalIDContent">
+                        <xsd:attribute name="schemeAgencyID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60" />
+                                    <xsd:minLength value="1" />
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                    </xsd:extension>
+                </xsd:simpleContent>
+            </xsd:complexType>
+            <xsd:simpleType name="BillOfMaterialInternalIDContent">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="8" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="BillOfMaterialItemGroupID">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="40" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="BillOfMaterialItemID">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="8" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="Code">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="2" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="CurrencyCode">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="3" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="Date">
+                <xsd:restriction base="xsd:date">
+                    <xsd:pattern value="[0-9]{4}-[0-9]{2}-[0-9]{2}" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:complexType name="DeliveryPriorityCode">
+                <xsd:simpleContent>
+                    <xsd:extension base="DeliveryPriorityCodeContent">
+                        <xsd:attribute name="listID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60" />
+                                    <xsd:minLength value="1" />
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                        <xsd:attribute name="listVersionID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="15" />
+                                    <xsd:minLength value="1" />
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                        <xsd:attribute name="listAgencyID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60" />
+                                    <xsd:minLength value="1" />
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                    </xsd:extension>
+                </xsd:simpleContent>
+            </xsd:complexType>
+            <xsd:simpleType name="DeliveryPriorityCodeContent">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="2" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="IntegerValue">
+                <xsd:restriction base="xsd:int" />
+            </xsd:simpleType>
+            <xsd:simpleType name="LanguageIndependentLongText">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="255" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="LanguageIndependentMediumName">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="40" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="LanguageIndependentMediumText">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="40" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="LanguageIndependentShortText">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="10" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="MeasureUnitCode">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="3" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="NOSCChangeNumber">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="12" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="NOSCPlantID">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="4" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="NOSCProductInternalID">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="60" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="OperationAlternativeID">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="5" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:complexType name="Price">
+                <xsd:sequence>
+                    <xsd:element name="Amount" form="qualified" type="Amount" />
+                    <xsd:element name="BaseQuantity" form="qualified" type="Quantity" />
+                    <xsd:element name="BaseQuantityTypeCode" minOccurs="0" form="qualified"
+                        type="QuantityTypeCode" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="Quantity">
+                <xsd:simpleContent>
+                    <xsd:extension base="QuantityContent">
+                        <xsd:attribute name="unitCode" type="MeasureUnitCode" />
+                    </xsd:extension>
+                </xsd:simpleContent>
+            </xsd:complexType>
+            <xsd:simpleType name="QuantityContent">
+                <xsd:restriction base="xsd:decimal">
+                    <xsd:totalDigits value="31" />
+                    <xsd:fractionDigits value="14" />
+                    <xsd:maxInclusive value="99999999999999999.99999999999999" />
+                    <xsd:minInclusive value="-99999999999999999.99999999999999" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:complexType name="QuantityTypeCode">
+                <xsd:simpleContent>
+                    <xsd:extension base="QuantityTypeCodeContent">
+                        <xsd:attribute name="listID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60" />
+                                    <xsd:minLength value="1" />
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                        <xsd:attribute name="listVersionID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="15" />
+                                    <xsd:minLength value="1" />
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                        <xsd:attribute name="listAgencyID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60" />
+                                    <xsd:minLength value="1" />
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                        <xsd:attribute name="listAgencySchemeID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60" />
+                                    <xsd:minLength value="1" />
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                        <xsd:attribute name="listAgencySchemeAgencyID"
+                            type="AgencyIdentificationCode" />
+                    </xsd:extension>
+                </xsd:simpleContent>
+            </xsd:complexType>
+            <xsd:simpleType name="QuantityTypeCodeContent">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="10" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:complexType name="UUID">
+                <xsd:simpleContent>
+                    <xsd:extension base="UUID.Content">
+                        <xsd:attribute name="schemeID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60" />
+                                    <xsd:minLength value="1" />
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                        <xsd:attribute name="schemeAgencyID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60" />
+                                    <xsd:minLength value="1" />
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                    </xsd:extension>
+                </xsd:simpleContent>
+            </xsd:complexType>
+            <xsd:simpleType name="UUID.Content">
+                <xsd:restriction base="xsd:token">
+                    <xsd:length value="36" />
+                    <xsd:pattern
+                        value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="UsageProbability">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="15" />
+                    <xsd:minLength value="1" />
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="BOMReplicateRequest">
+        <wsdl:part name="BOMReplicateRequest" element="n1:BOMReplicateRequest" />
+    </wsdl:message>
+    <wsdl:portType name="BOMReplicateReq_Async_Out">
+        <wsdl:documentation>
+            <sapdoc:sapdoc xmlns:sapdoc="urn:sap:esi:documentation">
+                <sapdoc:docitem applicationComponent="BNS-ARI-CI-FND" />
+            </sapdoc:sapdoc>
+        </wsdl:documentation>
+        <wsp:Policy>
+            <wsp:PolicyReference URI="#IF_IF_BOMReplicateReq_Async_Out" />
+        </wsp:Policy>
+        <wsdl:operation name="BOMReplicateReq_Async_Out">
+            <wsp:Policy>
+                <wsp:PolicyReference URI="#OP_IF_OP_BOMReplicateReq_Async_Out" />
+            </wsp:Policy>
+            <wsdl:input message="tns:BOMReplicateRequest" />
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

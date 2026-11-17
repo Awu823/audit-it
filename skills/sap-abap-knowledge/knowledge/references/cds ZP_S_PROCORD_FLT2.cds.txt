@@ -1,0 +1,112 @@
+@AbapCatalog.sqlViewName: 'ZP_S_FL2'
+@AbapCatalog.compiler.compareFilter: true
+@AccessControl.authorizationCheck: #CHECK
+@ObjectModel.representativeKey: 'OrderOperation'
+@EndUserText.label: 'Interface View for PISHEET Process Order Operation'
+-- @Analytics: {dataCategory: #DIMENSION, dataExtraction.enabled: true}
+@Metadata.allowExtensions:true
+@VDM.viewType: #COMPOSITE
+@ClientHandling.algorithm: #SESSION_VARIABLE
+@ObjectModel.usageType.dataClass: #TRANSACTIONAL
+@ObjectModel.usageType.serviceQuality: #C
+@ObjectModel.usageType.sizeCategory: #XL
+@Analytics: {
+    dataCategory: #CUBE
+}
+
+define view ZP_S_PROCORD_FLT2
+  as select from ZP_S_DCB_PROCORD_OPER_COFT as procord
+    inner join   Zp_po_rt               as rt on  procord.werk = rt.werks
+    -- and procord.auart = rt.auart
+                                                      and procord.phseq = rt.phseq
+
+{
+
+  key        procord.OrderID    as aufnr,
+  key        procord.OrderOperation,
+  key        rt.werks,
+  key        rt.auart,
+
+
+  key        rt.phseq,
+             rt.business_system as mes,
+             plnbez,
+
+             LAEDA,
+             sfcpf,
+             dispo,
+
+
+             gltrp,
+             gstrp,
+
+             gltrs,
+             gstrs,
+
+             gluzp,
+             gsuzp,
+             gsuzi,
+             geuzi,
+             glupp,
+             gsupp,
+             glups,
+             gsups,
+
+             gsuzs,
+             gluzs,
+
+             OperationDescription
+
+}
+where
+      not rt.no_send = 'X'
+  and not rt.phseq   is initial
+union
+
+select from  ZP_S_DCB_PROCORD_OPER_COFT as procord
+  inner join Zp_po_rt               as rt on  procord.werk = rt.werks
+                                                  and procord.phseq = rt.phseq
+-- and procord.phseq = rt.phseq '*'
+
+{
+
+  key        procord.OrderID    as aufnr,
+  key        procord.OrderOperation,
+  key        rt.werks,
+  key        rt.auart,
+
+
+  key        rt.phseq,
+             rt.business_system as mes,
+             plnbez,
+
+             LAEDA,
+             sfcpf,
+             dispo,
+
+
+             gltrp,
+             gstrp,
+
+             gltrs,
+             gstrs,
+
+             gluzp,
+             gsuzp,
+             gsuzi,
+             geuzi,
+             glupp,
+             gsupp,
+             glups,
+             gsups,
+
+             gsuzs,
+             gluzs,
+
+             OperationDescription
+
+}
+where
+  -- rt.phseq       like '%*%'
+      rt.phseq       is initial
+  and not rt.no_send = 'X'

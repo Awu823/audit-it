@@ -1,0 +1,713 @@
+<n0:ManufacturingProdnVersInfo xmlns:n0="http://sap.com/xi/PP/Global2"
+    xmlns:prx="urn:sap.com:proxy:SRC_SYS:/1SAI/PROXY_GEN_ID_PLACEHOLDER:758"
+    xmlns:n1="http://sap.com/Basis/CustomFields/Generated/*">
+    <MessageHeader>
+        <ID>PLACEHOLDER_GUID_32</ID>
+        <UUID>placeholder-guid-0002</UUID>
+        <CreationDateTime>2020-01-01T00:00:00Z</CreationDateTime>
+        <SenderBusinessSystemID>SRC_SYS_010</SenderBusinessSystemID>
+        <RecipientBusinessSystemID>TGT_SYS_LM</RecipientBusinessSystemID>
+    </MessageHeader>
+    <ProductionVersionInformation>
+        <Material>MATNR_PLACEHOLDER_01</Material>
+        <Plant>DEFAULT_WERKS</Plant>
+        <ProductionVersion>PV_PLACEHOLDER</ProductionVersion>
+        <ProductionVersionText>PRODUCT_DESCRIPTION_PLACEHOLDER</ProductionVersionText>
+        <MaterialMinLotSizeQuantity unitCode="EA">0.0</MaterialMinLotSizeQuantity>
+        <MaterialMaxLotSizeQuantity unitCode="EA">99999999.0</MaterialMaxLotSizeQuantity>
+        <ValidityStartDate>2020-01-01</ValidityStartDate>
+        <ValidityEndDate>9999-12-31</ValidityEndDate>
+        <BillOfOperationsType>2</BillOfOperationsType>
+        <BillOfOperationsGroup>BOO_GROUP_PLACEHOLDER</BillOfOperationsGroup>
+        <BillOfOperationsVariant>01</BillOfOperationsVariant>
+        <ProductionVersionStatus>1</ProductionVersionStatus>
+        <BillOfMaterialVariant>02</BillOfMaterialVariant>
+        <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+        <BOMCheckStatus>1</BOMCheckStatus>
+    </ProductionVersionInformation>
+    <n1:BOMCategory>M</n1:BOMCategory>
+    <n1:BillOfMaterial>BOM_NO_PLACEHOLDER</n1:BillOfMaterial>
+    <n1:BOMHeaderText>TEST </n1:BOMHeaderText>
+    <n1:BOMHeaderQuantityInBaseUnit>1000.0</n1:BOMHeaderQuantityInBaseUnit>
+    <n1:BOMHeaderBaseUnit>EA</n1:BOMHeaderBaseUnit>
+    <n1:BOMHeaderECN>ECN_PLACEHOLDER</n1:BOMHeaderECN>
+    <n1:BOM_EXTRA_DATA>
+        <n1:BOM_HEADER_ECN>ECN_PLACEHOLDER</n1:BOM_HEADER_ECN>
+        <n1:BOM_VALIDITY_START_DATE>2020-01-01</n1:BOM_VALIDITY_START_DATE>
+        <n1:BOM_VALIDITY_END_DATE>9999-12-31</n1:BOM_VALIDITY_END_DATE>
+        <n1:QUANTITY_IN_BASE_UNIT>1000.000</n1:QUANTITY_IN_BASE_UNIT>
+        <n1:BOM_HEADER_BASE_UNIT>EA</n1:BOM_HEADER_BASE_UNIT>
+    </n1:BOM_EXTRA_DATA>
+    <n1:BillOfOperationsType>2</n1:BillOfOperationsType>
+    <n1:BillOfOperationsGroup>BOO_GROUP_PLACEHOLDER</n1:BillOfOperationsGroup>
+    <n1:BillOfOperationsVariant>1</n1:BillOfOperationsVariant>
+    <n1:BillOfOperationsHeader>
+        <n0:BillOfOperationsDesc>PRODUCT_DESCRIPTION_PLACEHOLDER</n0:BillOfOperationsDesc>
+        <n0:BillOfOperationsStatus>4</n0:BillOfOperationsStatus>
+        <n0:BillOfOperationsPlant>DEFAULT_WERKS</n0:BillOfOperationsPlant>
+        <n0:BillOfOperationsUsage>1</n0:BillOfOperationsUsage>
+        <n0:BOOMinLotSizeQuantity unitCode="EA">0.0</n0:BOOMinLotSizeQuantity>
+        <n0:BOOMaxLotSizeQuantity unitCode="EA">99999999.0</n0:BOOMaxLotSizeQuantity>
+        <n0:ChangeNumber>ECN_PLACEHOLDER</n0:ChangeNumber>
+        <n0:ValidityStartDate>2020-01-01</n0:ValidityStartDate>
+        <n0:ValidityEndDate>9999-12-31</n0:ValidityEndDate>
+    </n1:BillOfOperationsHeader>
+    <n1:BillOfOperationsMaterialAssignment>
+        <Material>MATNR_PLACEHOLDER_01</Material>
+        <Plant>DEFAULT_WERKS</Plant>
+        <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+        <ValidityStartDate>2020-01-01</ValidityStartDate>
+        <ValidityEndDate>9999-12-31</ValidityEndDate>
+    </n1:BillOfOperationsMaterialAssignment>
+    <n1:ProductionVersion>2020</n1:ProductionVersion>
+    <n1:BillOfOperationsActivityNetworkElement>
+        <BillOfOperationsNodeType>Operation</BillOfOperationsNodeType>
+        <BillOfOperationsNodeID>NODE_ID_PLACEHOLDER_01</BillOfOperationsNodeID>
+        <BillOfOperationsActivityNetworkElementTimeSlice>
+            <Operation>0100</Operation>
+            <BOOOperationInternalID>00000001</BOOOperationInternalID>
+            <OperationDescription>OPERATION_DESC_PLACEHOLDER</OperationDescription>
+            <OperationControlProfile n0:OperationControlKey="CTRL_KEY_PLACEHOLDER">
+                <n0:CompletionConfirmation n0:CompletionConfirmationCode=" ">
+                    <ConfirmationIsMilestoneConf>false</ConfirmationIsMilestoneConf>
+                    <ConfirmationIsRequired>false</ConfirmationIsRequired>
+                    <ConfirmationIsNotPossible>false</ConfirmationIsNotPossible>
+                    <ConfirmationIsOptional>true</ConfirmationIsOptional>
+                </n0:CompletionConfirmation>
+                <n0:OperationIsScheduled>true</n0:OperationIsScheduled>
+                <n0:CapacityRequirementsAreDtmnd>true</n0:CapacityRequirementsAreDtmnd>
+                <n0:GRIsPostedAutomatically>false</n0:GRIsPostedAutomatically>
+                <n0:OperationIsNotMESRelevant>false</n0:OperationIsNotMESRelevant>
+            </OperationControlProfile>
+            <WorkCenterInternalID>WC_ID_PLACEHOLDER_03</WorkCenterInternalID>
+            <WorkCenter>WC_PLACEHOLDER_01</WorkCenter>
+            <OperationReferenceQuantity unitCode="EA">1000.0</OperationReferenceQuantity>
+            <OpQtyToBaseQtyNmrtr>1</OpQtyToBaseQtyNmrtr>
+            <OpQtyToBaseQtyDnmntr>1</OpQtyToBaseQtyDnmntr>
+            <FactoryCalendar>FC_PLACEHOLDER</FactoryCalendar>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:FieldKey>FIELD_KEY_PLACEHOLDER</n1:FieldKey>
+            <n1:UserField00>VABYSMODP</n1:UserField00>
+            <n1:UserField04>0.000</n1:UserField04>
+            <n1:UserField05>1.000</n1:UserField05>
+            <n1:UserField05Unit>PC</n1:UserField05Unit>
+            <n1:UserField07>0.000</n1:UserField07>
+            <n1:UserField06>0.000</n1:UserField06>
+            <n1:UserField08>00000000</n1:UserField08>
+            <n1:KeywordUser00>KEYWORD_PLACEHOLDER_01</n1:KeywordUser00>
+            <n1:KeywordUser01>KEYWORD_PLACEHOLDER_02</n1:KeywordUser01>
+            <n1:KeywordUser02>KEYWORD_PLACEHOLDER_03</n1:KeywordUser02>
+            <n1:KeywordUser03>KEYWORD_PLACEHOLDER_04</n1:KeywordUser03>
+            <n1:KeywordUser05>KEYWORD_PLACEHOLDER_05</n1:KeywordUser05>
+            <n1:KeywordUser10>KEYWORD_PLACEHOLDER_06</n1:KeywordUser10>
+        </BillOfOperationsActivityNetworkElementTimeSlice>
+    </n1:BillOfOperationsActivityNetworkElement>
+    <n1:BillOfOperationsActivityNetworkElement>
+        <BillOfOperationsNodeType>Phase</BillOfOperationsNodeType>
+        <BillOfOperationsNodeID>NODE_ID_PLACEHOLDER_02</BillOfOperationsNodeID>
+        <BillOfOperationsActivityNetworkElementTimeSlice>
+            <Operation>0110</Operation>
+            <BOOOperationInternalID>00000002</BOOOperationInternalID>
+            <OperationDescription>OPERATION_DESC_PLACEHOLDER</OperationDescription>
+            <OperationControlProfile n0:OperationControlKey="CTRL_KEY_PLACEHOLDER">
+                <n0:CompletionConfirmation n0:CompletionConfirmationCode="2">
+                    <ConfirmationIsMilestoneConf>false</ConfirmationIsMilestoneConf>
+                    <ConfirmationIsRequired>true</ConfirmationIsRequired>
+                    <ConfirmationIsNotPossible>false</ConfirmationIsNotPossible>
+                    <ConfirmationIsOptional>false</ConfirmationIsOptional>
+                </n0:CompletionConfirmation>
+                <n0:OperationIsScheduled>true</n0:OperationIsScheduled>
+                <n0:CapacityRequirementsAreDtmnd>true</n0:CapacityRequirementsAreDtmnd>
+                <n0:GRIsPostedAutomatically>false</n0:GRIsPostedAutomatically>
+                <n0:OperationIsNotMESRelevant>false</n0:OperationIsNotMESRelevant>
+            </OperationControlProfile>
+            <WorkCenterInternalID>WC_ID_PLACEHOLDER_03</WorkCenterInternalID>
+            <WorkCenter>WC_PLACEHOLDER_01</WorkCenter>
+            <StandardWorkFormulaParamGroup StandardWorkFormulaParamGroupID="FORMULA_GROUP_PLACEHOLDER">
+                <WorkCenterFormulaParam1 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Fixed</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">1.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam1>
+                <WorkCenterFormulaParam2 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Variable</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">5.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam2>
+                <WorkCenterFormulaParam3 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">LabT Fixed</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">1.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam3>
+                <WorkCenterFormulaParam4 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">LabT Variable</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">3.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam4>
+                <WorkCenterFormulaParam5 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Fixed Setup</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">1.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam5>
+                <WorkCenterFormulaParam6 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Seq.Dep.Setup</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">1.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam6>
+            </StandardWorkFormulaParamGroup>
+            <OperationReferenceQuantity unitCode="EA">1000.0</OperationReferenceQuantity>
+            <OpQtyToBaseQtyNmrtr>1</OpQtyToBaseQtyNmrtr>
+            <OpQtyToBaseQtyDnmntr>1</OpQtyToBaseQtyDnmntr>
+            <FactoryCalendar>FC_PLACEHOLDER</FactoryCalendar>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ControlRecipeDestination>CRD_PLACEHOLDER</n1:ControlRecipeDestination>
+            <n1:FieldKey>FIELD_KEY_PLACEHOLDER</n1:FieldKey>
+            <n1:UserField04>0.000</n1:UserField04>
+            <n1:UserField05>1.000</n1:UserField05>
+            <n1:UserField05Unit>PC</n1:UserField05Unit>
+            <n1:UserField07>0.000</n1:UserField07>
+            <n1:UserField06>0.000</n1:UserField06>
+            <n1:UserField08>00000000</n1:UserField08>
+            <n1:KeywordUser00>KEYWORD_PLACEHOLDER_01</n1:KeywordUser00>
+            <n1:KeywordUser01>KEYWORD_PLACEHOLDER_02</n1:KeywordUser01>
+            <n1:KeywordUser02>KEYWORD_PLACEHOLDER_03</n1:KeywordUser02>
+            <n1:KeywordUser03>KEYWORD_PLACEHOLDER_04</n1:KeywordUser03>
+            <n1:KeywordUser05>KEYWORD_PLACEHOLDER_05</n1:KeywordUser05>
+            <n1:KeywordUser10>KEYWORD_PLACEHOLDER_06</n1:KeywordUser10>
+        </BillOfOperationsActivityNetworkElementTimeSlice>
+        <BillOfOperationsActivityComponentAllocation>
+            <BillOfMaterialCategory>M</BillOfMaterialCategory>
+            <BillOfMaterial>BOM_NO_PLACEHOLDER</BillOfMaterial>
+            <BillOfMaterialVariant>2</BillOfMaterialVariant>
+            <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+            <BillOfMaterialItemCategory>Y</BillOfMaterialItemCategory>
+            <BillOfMaterialItemNodeNumber>00000040</BillOfMaterialItemNodeNumber>
+            <BillOfMaterialItemNumber>0010</BillOfMaterialItemNumber>
+            <BillOfMaterialComponent>MATNR_PLACEHOLDER_02</BillOfMaterialComponent>
+            <BillOfMaterialItemQuantity unitCode="KG">12.0</BillOfMaterialItemQuantity>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ComponentScrapInPercent>0.00</n1:ComponentScrapInPercent>
+            <n1:BomItemECN>ECN_PLACEHOLDER</n1:BomItemECN>
+            <n1:BomItemValidityStartDate>2020-01-01</n1:BomItemValidityStartDate>
+            <n1:BomItemValidityEndDate>9999-12-31</n1:BomItemValidityEndDate>
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_01" Sequence="1" />
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_02" Sequence="1" />
+        </BillOfOperationsActivityComponentAllocation>
+        <BillOfOperationsActivityComponentAllocation>
+            <BillOfMaterialCategory>M</BillOfMaterialCategory>
+            <BillOfMaterial>BOM_NO_PLACEHOLDER</BillOfMaterial>
+            <BillOfMaterialVariant>2</BillOfMaterialVariant>
+            <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+            <BillOfMaterialItemCategory>L</BillOfMaterialItemCategory>
+            <BillOfMaterialItemNodeNumber>00000044</BillOfMaterialItemNodeNumber>
+            <BillOfMaterialItemNumber>0050</BillOfMaterialItemNumber>
+            <BillOfMaterialComponent>MATNR_PLACEHOLDER_03</BillOfMaterialComponent>
+            <BillOfMaterialItemQuantity unitCode="EA">1.0</BillOfMaterialItemQuantity>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ComponentScrapInPercent>0.00</n1:ComponentScrapInPercent>
+            <n1:BomItemECN>ECN_PLACEHOLDER</n1:BomItemECN>
+            <n1:BomItemValidityStartDate>2020-01-01</n1:BomItemValidityStartDate>
+            <n1:BomItemValidityEndDate>9999-12-31</n1:BomItemValidityEndDate>
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_01" Sequence="1" />
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_02" Sequence="1" />
+        </BillOfOperationsActivityComponentAllocation>
+        <BillOfOperationsActivityComponentAllocation>
+            <BillOfMaterialCategory>M</BillOfMaterialCategory>
+            <BillOfMaterial>BOM_NO_PLACEHOLDER</BillOfMaterial>
+            <BillOfMaterialVariant>2</BillOfMaterialVariant>
+            <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+            <BillOfMaterialItemCategory>L</BillOfMaterialItemCategory>
+            <BillOfMaterialItemNodeNumber>00000045</BillOfMaterialItemNodeNumber>
+            <BillOfMaterialItemNumber>0060</BillOfMaterialItemNumber>
+            <BillOfMaterialComponent>MATNR_PLACEHOLDER_04</BillOfMaterialComponent>
+            <BillOfMaterialItemQuantity unitCode="EA">1.0</BillOfMaterialItemQuantity>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ComponentScrapInPercent>0.00</n1:ComponentScrapInPercent>
+            <n1:BomItemECN>ECN_PLACEHOLDER</n1:BomItemECN>
+            <n1:BomItemValidityStartDate>2020-01-01</n1:BomItemValidityStartDate>
+            <n1:BomItemValidityEndDate>9999-12-31</n1:BomItemValidityEndDate>
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_01" Sequence="1" />
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_02" Sequence="1" />
+        </BillOfOperationsActivityComponentAllocation>
+        <BillOfOperationsActivityComponentAllocation>
+            <BillOfMaterialCategory>M</BillOfMaterialCategory>
+            <BillOfMaterial>BOM_NO_PLACEHOLDER</BillOfMaterial>
+            <BillOfMaterialVariant>2</BillOfMaterialVariant>
+            <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+            <BillOfMaterialItemCategory>L</BillOfMaterialItemCategory>
+            <BillOfMaterialItemNodeNumber>00000049</BillOfMaterialItemNodeNumber>
+            <BillOfMaterialItemNumber>0100</BillOfMaterialItemNumber>
+            <BillOfMaterialComponent>MATNR_PLACEHOLDER_05</BillOfMaterialComponent>
+            <BillOfMaterialItemQuantity unitCode="EA">1.0</BillOfMaterialItemQuantity>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ComponentScrapInPercent>0.00</n1:ComponentScrapInPercent>
+            <n1:BomItemECN>ECN_PLACEHOLDER</n1:BomItemECN>
+            <n1:BomItemValidityStartDate>2020-01-01</n1:BomItemValidityStartDate>
+            <n1:BomItemValidityEndDate>9999-12-31</n1:BomItemValidityEndDate>
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_01" Sequence="1" />
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_02" Sequence="1" />
+        </BillOfOperationsActivityComponentAllocation>
+        <BillOfOperationsActivityComponentAllocation>
+            <BillOfMaterialCategory>M</BillOfMaterialCategory>
+            <BillOfMaterial>BOM_NO_PLACEHOLDER</BillOfMaterial>
+            <BillOfMaterialVariant>2</BillOfMaterialVariant>
+            <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+            <BillOfMaterialItemCategory>L</BillOfMaterialItemCategory>
+            <BillOfMaterialItemNodeNumber>00000050</BillOfMaterialItemNodeNumber>
+            <BillOfMaterialItemNumber>0110</BillOfMaterialItemNumber>
+            <BillOfMaterialComponent>MATNR_PLACEHOLDER_06</BillOfMaterialComponent>
+            <BillOfMaterialItemQuantity unitCode="EA">1.0</BillOfMaterialItemQuantity>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ComponentScrapInPercent>0.00</n1:ComponentScrapInPercent>
+            <n1:BomItemECN>ECN_PLACEHOLDER</n1:BomItemECN>
+            <n1:BomItemValidityStartDate>2020-01-01</n1:BomItemValidityStartDate>
+            <n1:BomItemValidityEndDate>9999-12-31</n1:BomItemValidityEndDate>
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_01" Sequence="1" />
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_02" Sequence="1" />
+        </BillOfOperationsActivityComponentAllocation>
+    </n1:BillOfOperationsActivityNetworkElement>
+    <n1:BillOfOperationsActivityNetworkElement>
+        <BillOfOperationsNodeType>Operation</BillOfOperationsNodeType>
+        <BillOfOperationsNodeID>NODE_ID_PLACEHOLDER_03</BillOfOperationsNodeID>
+        <BillOfOperationsActivityNetworkElementTimeSlice>
+            <Operation>0200</Operation>
+            <BOOOperationInternalID>00000003</BOOOperationInternalID>
+            <OperationDescription>OPERATION_DESC_PLACEHOLDER</OperationDescription>
+            <OperationControlProfile n0:OperationControlKey="CTRL_KEY_PLACEHOLDER">
+                <n0:CompletionConfirmation n0:CompletionConfirmationCode=" ">
+                    <ConfirmationIsMilestoneConf>false</ConfirmationIsMilestoneConf>
+                    <ConfirmationIsRequired>false</ConfirmationIsRequired>
+                    <ConfirmationIsNotPossible>false</ConfirmationIsNotPossible>
+                    <ConfirmationIsOptional>true</ConfirmationIsOptional>
+                </n0:CompletionConfirmation>
+                <n0:OperationIsScheduled>true</n0:OperationIsScheduled>
+                <n0:CapacityRequirementsAreDtmnd>true</n0:CapacityRequirementsAreDtmnd>
+                <n0:GRIsPostedAutomatically>false</n0:GRIsPostedAutomatically>
+                <n0:OperationIsNotMESRelevant>false</n0:OperationIsNotMESRelevant>
+            </OperationControlProfile>
+            <WorkCenterInternalID>WC_ID_PLACEHOLDER_01</WorkCenterInternalID>
+            <WorkCenter>WC_PLACEHOLDER_02</WorkCenter>
+            <OperationReferenceQuantity unitCode="EA">1000.0</OperationReferenceQuantity>
+            <OpQtyToBaseQtyNmrtr>1</OpQtyToBaseQtyNmrtr>
+            <OpQtyToBaseQtyDnmntr>1</OpQtyToBaseQtyDnmntr>
+            <FactoryCalendar>FC_PLACEHOLDER</FactoryCalendar>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:FieldKey>FIELD_KEY_PLACEHOLDER</n1:FieldKey>
+            <n1:UserField04>0.000</n1:UserField04>
+            <n1:UserField05>1.000</n1:UserField05>
+            <n1:UserField05Unit>PC</n1:UserField05Unit>
+            <n1:UserField07>0.000</n1:UserField07>
+            <n1:UserField06>0.000</n1:UserField06>
+            <n1:UserField08>00000000</n1:UserField08>
+            <n1:KeywordUser00>KEYWORD_PLACEHOLDER_01</n1:KeywordUser00>
+            <n1:KeywordUser01>KEYWORD_PLACEHOLDER_02</n1:KeywordUser01>
+            <n1:KeywordUser02>KEYWORD_PLACEHOLDER_03</n1:KeywordUser02>
+            <n1:KeywordUser03>KEYWORD_PLACEHOLDER_04</n1:KeywordUser03>
+            <n1:KeywordUser05>KEYWORD_PLACEHOLDER_05</n1:KeywordUser05>
+            <n1:KeywordUser10>KEYWORD_PLACEHOLDER_06</n1:KeywordUser10>
+        </BillOfOperationsActivityNetworkElementTimeSlice>
+    </n1:BillOfOperationsActivityNetworkElement>
+    <n1:BillOfOperationsActivityNetworkElement>
+        <BillOfOperationsNodeType>Phase</BillOfOperationsNodeType>
+        <BillOfOperationsNodeID>NODE_ID_PLACEHOLDER_04</BillOfOperationsNodeID>
+        <BillOfOperationsActivityNetworkElementTimeSlice>
+            <Operation>0210</Operation>
+            <BOOOperationInternalID>00000004</BOOOperationInternalID>
+            <OperationDescription>OPERATION_DESC_PLACEHOLDER</OperationDescription>
+            <OperationControlProfile n0:OperationControlKey="CTRL_KEY_PLACEHOLDER">
+                <n0:CompletionConfirmation n0:CompletionConfirmationCode="2">
+                    <ConfirmationIsMilestoneConf>false</ConfirmationIsMilestoneConf>
+                    <ConfirmationIsRequired>true</ConfirmationIsRequired>
+                    <ConfirmationIsNotPossible>false</ConfirmationIsNotPossible>
+                    <ConfirmationIsOptional>false</ConfirmationIsOptional>
+                </n0:CompletionConfirmation>
+                <n0:OperationIsScheduled>true</n0:OperationIsScheduled>
+                <n0:CapacityRequirementsAreDtmnd>true</n0:CapacityRequirementsAreDtmnd>
+                <n0:GRIsPostedAutomatically>false</n0:GRIsPostedAutomatically>
+                <n0:OperationIsNotMESRelevant>false</n0:OperationIsNotMESRelevant>
+            </OperationControlProfile>
+            <WorkCenterInternalID>WC_ID_PLACEHOLDER_01</WorkCenterInternalID>
+            <WorkCenter>WC_PLACEHOLDER_02</WorkCenter>
+            <StandardWorkFormulaParamGroup StandardWorkFormulaParamGroupID="FORMULA_GROUP_PLACEHOLDER">
+                <WorkCenterFormulaParam1 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Fixed</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">1.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam1>
+                <WorkCenterFormulaParam2 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Variable</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">2.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam2>
+                <WorkCenterFormulaParam3 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">LabT Fixed</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">1.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam3>
+                <WorkCenterFormulaParam4 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">LabT Variable</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">2.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam4>
+                <WorkCenterFormulaParam5 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Fixed Setup</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">0.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam5>
+                <WorkCenterFormulaParam6 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Seq.Dep.Setup</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">0.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam6>
+            </StandardWorkFormulaParamGroup>
+            <OperationReferenceQuantity unitCode="EA">1000.0</OperationReferenceQuantity>
+            <OpQtyToBaseQtyNmrtr>1</OpQtyToBaseQtyNmrtr>
+            <OpQtyToBaseQtyDnmntr>1</OpQtyToBaseQtyDnmntr>
+            <FactoryCalendar>FC_PLACEHOLDER</FactoryCalendar>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ControlRecipeDestination>CRD_PLACEHOLDER</n1:ControlRecipeDestination>
+            <n1:FieldKey>FIELD_KEY_PLACEHOLDER</n1:FieldKey>
+            <n1:UserField04>0.000</n1:UserField04>
+            <n1:UserField05>1.000</n1:UserField05>
+            <n1:UserField05Unit>PC</n1:UserField05Unit>
+            <n1:UserField07>0.000</n1:UserField07>
+            <n1:UserField06>0.000</n1:UserField06>
+            <n1:UserField08>00000000</n1:UserField08>
+            <n1:UserField09>X</n1:UserField09>
+            <n1:KeywordUser00>KEYWORD_PLACEHOLDER_01</n1:KeywordUser00>
+            <n1:KeywordUser01>KEYWORD_PLACEHOLDER_02</n1:KeywordUser01>
+            <n1:KeywordUser02>KEYWORD_PLACEHOLDER_03</n1:KeywordUser02>
+            <n1:KeywordUser03>KEYWORD_PLACEHOLDER_04</n1:KeywordUser03>
+            <n1:KeywordUser05>KEYWORD_PLACEHOLDER_05</n1:KeywordUser05>
+            <n1:KeywordUser10>KEYWORD_PLACEHOLDER_06</n1:KeywordUser10>
+        </BillOfOperationsActivityNetworkElementTimeSlice>
+        <BillOfOperationsActivityComponentAllocation>
+            <BillOfMaterialCategory>M</BillOfMaterialCategory>
+            <BillOfMaterial>BOM_NO_PLACEHOLDER</BillOfMaterial>
+            <BillOfMaterialVariant>2</BillOfMaterialVariant>
+            <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+            <BillOfMaterialItemCategory>L</BillOfMaterialItemCategory>
+            <BillOfMaterialItemNodeNumber>00000041</BillOfMaterialItemNodeNumber>
+            <BillOfMaterialItemNumber>0020</BillOfMaterialItemNumber>
+            <BillOfMaterialComponent>MATNR_PLACEHOLDER_11</BillOfMaterialComponent>
+            <BillOfMaterialItemQuantity unitCode="EA">1000.0</BillOfMaterialItemQuantity>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ComponentScrapInPercent>0.00</n1:ComponentScrapInPercent>
+            <n1:BomItemECN>ECN_PLACEHOLDER</n1:BomItemECN>
+            <n1:BomItemValidityStartDate>2020-01-01</n1:BomItemValidityStartDate>
+            <n1:BomItemValidityEndDate>9999-12-31</n1:BomItemValidityEndDate>
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_01" Sequence="1" />
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_02" Sequence="1" />
+        </BillOfOperationsActivityComponentAllocation>
+        <BillOfOperationsActivityComponentAllocation>
+            <BillOfMaterialCategory>M</BillOfMaterialCategory>
+            <BillOfMaterial>BOM_NO_PLACEHOLDER</BillOfMaterial>
+            <BillOfMaterialVariant>2</BillOfMaterialVariant>
+            <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+            <BillOfMaterialItemCategory>L</BillOfMaterialItemCategory>
+            <BillOfMaterialItemNodeNumber>00000042</BillOfMaterialItemNodeNumber>
+            <BillOfMaterialItemNumber>0030</BillOfMaterialItemNumber>
+            <BillOfMaterialComponent>MATNR_PLACEHOLDER_12</BillOfMaterialComponent>
+            <BillOfMaterialItemQuantity unitCode="EA">1000.0</BillOfMaterialItemQuantity>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ComponentScrapInPercent>0.00</n1:ComponentScrapInPercent>
+            <n1:BomItemECN>ECN_PLACEHOLDER</n1:BomItemECN>
+            <n1:BomItemValidityStartDate>2020-01-01</n1:BomItemValidityStartDate>
+            <n1:BomItemValidityEndDate>9999-12-31</n1:BomItemValidityEndDate>
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_01" Sequence="1" />
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_02" Sequence="1" />
+        </BillOfOperationsActivityComponentAllocation>
+        <BillOfOperationsActivityComponentAllocation>
+            <BillOfMaterialCategory>M</BillOfMaterialCategory>
+            <BillOfMaterial>BOM_NO_PLACEHOLDER</BillOfMaterial>
+            <BillOfMaterialVariant>2</BillOfMaterialVariant>
+            <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+            <BillOfMaterialItemCategory>L</BillOfMaterialItemCategory>
+            <BillOfMaterialItemNodeNumber>00000043</BillOfMaterialItemNodeNumber>
+            <BillOfMaterialItemNumber>0040</BillOfMaterialItemNumber>
+            <BillOfMaterialComponent>MATNR_PLACEHOLDER_10</BillOfMaterialComponent>
+            <BillOfMaterialItemQuantity unitCode="EA">1000.0</BillOfMaterialItemQuantity>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ComponentScrapInPercent>0.00</n1:ComponentScrapInPercent>
+            <n1:BomItemECN>ECN_PLACEHOLDER</n1:BomItemECN>
+            <n1:BomItemValidityStartDate>2020-01-01</n1:BomItemValidityStartDate>
+            <n1:BomItemValidityEndDate>9999-12-31</n1:BomItemValidityEndDate>
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_01" Sequence="1" />
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_02" Sequence="1" />
+        </BillOfOperationsActivityComponentAllocation>
+        <BillOfOperationsActivityComponentAllocation>
+            <BillOfMaterialCategory>M</BillOfMaterialCategory>
+            <BillOfMaterial>BOM_NO_PLACEHOLDER</BillOfMaterial>
+            <BillOfMaterialVariant>2</BillOfMaterialVariant>
+            <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+            <BillOfMaterialItemCategory>L</BillOfMaterialItemCategory>
+            <BillOfMaterialItemNodeNumber>00000046</BillOfMaterialItemNodeNumber>
+            <BillOfMaterialItemNumber>0070</BillOfMaterialItemNumber>
+            <BillOfMaterialComponent>MATNR_PLACEHOLDER_08</BillOfMaterialComponent>
+            <BillOfMaterialItemQuantity unitCode="EA">1.0</BillOfMaterialItemQuantity>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ComponentScrapInPercent>0.00</n1:ComponentScrapInPercent>
+            <n1:BomItemECN>ECN_PLACEHOLDER</n1:BomItemECN>
+            <n1:BomItemValidityStartDate>2020-01-01</n1:BomItemValidityStartDate>
+            <n1:BomItemValidityEndDate>9999-12-31</n1:BomItemValidityEndDate>
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_01" Sequence="1" />
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_02" Sequence="1" />
+        </BillOfOperationsActivityComponentAllocation>
+        <BillOfOperationsActivityComponentAllocation>
+            <BillOfMaterialCategory>M</BillOfMaterialCategory>
+            <BillOfMaterial>BOM_NO_PLACEHOLDER</BillOfMaterial>
+            <BillOfMaterialVariant>2</BillOfMaterialVariant>
+            <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+            <BillOfMaterialItemCategory>L</BillOfMaterialItemCategory>
+            <BillOfMaterialItemNodeNumber>00000047</BillOfMaterialItemNodeNumber>
+            <BillOfMaterialItemNumber>0080</BillOfMaterialItemNumber>
+            <BillOfMaterialComponent>MATNR_PLACEHOLDER_09</BillOfMaterialComponent>
+            <BillOfMaterialItemQuantity unitCode="EA">1.0</BillOfMaterialItemQuantity>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ComponentScrapInPercent>0.00</n1:ComponentScrapInPercent>
+            <n1:BomItemECN>ECN_PLACEHOLDER</n1:BomItemECN>
+            <n1:BomItemValidityStartDate>2020-01-01</n1:BomItemValidityStartDate>
+            <n1:BomItemValidityEndDate>9999-12-31</n1:BomItemValidityEndDate>
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_01" Sequence="1" />
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_02" Sequence="1" />
+        </BillOfOperationsActivityComponentAllocation>
+        <BillOfOperationsActivityComponentAllocation>
+            <BillOfMaterialCategory>M</BillOfMaterialCategory>
+            <BillOfMaterial>BOM_NO_PLACEHOLDER</BillOfMaterial>
+            <BillOfMaterialVariant>2</BillOfMaterialVariant>
+            <BillOfMaterialVariantUsage>1</BillOfMaterialVariantUsage>
+            <BillOfMaterialItemCategory>L</BillOfMaterialItemCategory>
+            <BillOfMaterialItemNodeNumber>00000048</BillOfMaterialItemNodeNumber>
+            <BillOfMaterialItemNumber>0090</BillOfMaterialItemNumber>
+            <BillOfMaterialComponent>MATNR_PLACEHOLDER_07</BillOfMaterialComponent>
+            <BillOfMaterialItemQuantity unitCode="EA">1.0</BillOfMaterialItemQuantity>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ComponentScrapInPercent>0.00</n1:ComponentScrapInPercent>
+            <n1:BomItemECN>ECN_PLACEHOLDER</n1:BomItemECN>
+            <n1:BomItemValidityStartDate>2020-01-01</n1:BomItemValidityStartDate>
+            <n1:BomItemValidityEndDate>9999-12-31</n1:BomItemValidityEndDate>
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_01" Sequence="1" />
+            <n1:BomItemKV Key="KV_KEY_PLACEHOLDER_02" Sequence="1" />
+        </BillOfOperationsActivityComponentAllocation>
+    </n1:BillOfOperationsActivityNetworkElement>
+    <n1:BillOfOperationsActivityNetworkElement>
+        <BillOfOperationsNodeType>Operation</BillOfOperationsNodeType>
+        <BillOfOperationsNodeID>NODE_ID_PLACEHOLDER_05</BillOfOperationsNodeID>
+        <BillOfOperationsActivityNetworkElementTimeSlice>
+            <Operation>0300</Operation>
+            <BOOOperationInternalID>00000005</BOOOperationInternalID>
+            <OperationDescription>OPERATION_DESC_PLACEHOLDER</OperationDescription>
+            <OperationControlProfile n0:OperationControlKey="CTRL_KEY_PLACEHOLDER">
+                <n0:CompletionConfirmation n0:CompletionConfirmationCode=" ">
+                    <ConfirmationIsMilestoneConf>false</ConfirmationIsMilestoneConf>
+                    <ConfirmationIsRequired>false</ConfirmationIsRequired>
+                    <ConfirmationIsNotPossible>false</ConfirmationIsNotPossible>
+                    <ConfirmationIsOptional>true</ConfirmationIsOptional>
+                </n0:CompletionConfirmation>
+                <n0:OperationIsScheduled>true</n0:OperationIsScheduled>
+                <n0:CapacityRequirementsAreDtmnd>true</n0:CapacityRequirementsAreDtmnd>
+                <n0:GRIsPostedAutomatically>false</n0:GRIsPostedAutomatically>
+                <n0:OperationIsNotMESRelevant>false</n0:OperationIsNotMESRelevant>
+            </OperationControlProfile>
+            <WorkCenterInternalID>WC_ID_PLACEHOLDER_02</WorkCenterInternalID>
+            <WorkCenter>WC_PLACEHOLDER_03</WorkCenter>
+            <OperationReferenceQuantity unitCode="EA">1000.0</OperationReferenceQuantity>
+            <OpQtyToBaseQtyNmrtr>1</OpQtyToBaseQtyNmrtr>
+            <OpQtyToBaseQtyDnmntr>1</OpQtyToBaseQtyDnmntr>
+            <FactoryCalendar>FC_PLACEHOLDER</FactoryCalendar>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:FieldKey>FIELD_KEY_PLACEHOLDER</n1:FieldKey>
+            <n1:UserField04>0.000</n1:UserField04>
+            <n1:UserField05>1.000</n1:UserField05>
+            <n1:UserField05Unit>PC</n1:UserField05Unit>
+            <n1:UserField07>0.000</n1:UserField07>
+            <n1:UserField06>0.000</n1:UserField06>
+            <n1:UserField08>00000000</n1:UserField08>
+            <n1:KeywordUser00>KEYWORD_PLACEHOLDER_01</n1:KeywordUser00>
+            <n1:KeywordUser01>KEYWORD_PLACEHOLDER_02</n1:KeywordUser01>
+            <n1:KeywordUser02>KEYWORD_PLACEHOLDER_03</n1:KeywordUser02>
+            <n1:KeywordUser03>KEYWORD_PLACEHOLDER_04</n1:KeywordUser03>
+            <n1:KeywordUser05>KEYWORD_PLACEHOLDER_05</n1:KeywordUser05>
+            <n1:KeywordUser10>KEYWORD_PLACEHOLDER_06</n1:KeywordUser10>
+        </BillOfOperationsActivityNetworkElementTimeSlice>
+    </n1:BillOfOperationsActivityNetworkElement>
+    <n1:BillOfOperationsActivityNetworkElement>
+        <BillOfOperationsNodeType>Phase</BillOfOperationsNodeType>
+        <BillOfOperationsNodeID>NODE_ID_PLACEHOLDER_06</BillOfOperationsNodeID>
+        <BillOfOperationsActivityNetworkElementTimeSlice>
+            <Operation>0310</Operation>
+            <BOOOperationInternalID>00000006</BOOOperationInternalID>
+            <OperationDescription>OPERATION_DESC_PLACEHOLDER</OperationDescription>
+            <OperationControlProfile n0:OperationControlKey="CTRL_KEY_PLACEHOLDER">
+                <n0:CompletionConfirmation n0:CompletionConfirmationCode="2">
+                    <ConfirmationIsMilestoneConf>false</ConfirmationIsMilestoneConf>
+                    <ConfirmationIsRequired>true</ConfirmationIsRequired>
+                    <ConfirmationIsNotPossible>false</ConfirmationIsNotPossible>
+                    <ConfirmationIsOptional>false</ConfirmationIsOptional>
+                </n0:CompletionConfirmation>
+                <n0:OperationIsScheduled>false</n0:OperationIsScheduled>
+                <n0:CapacityRequirementsAreDtmnd>false</n0:CapacityRequirementsAreDtmnd>
+                <n0:GRIsPostedAutomatically>false</n0:GRIsPostedAutomatically>
+                <n0:OperationIsNotMESRelevant>false</n0:OperationIsNotMESRelevant>
+            </OperationControlProfile>
+            <WorkCenterInternalID>WC_ID_PLACEHOLDER_02</WorkCenterInternalID>
+            <WorkCenter>WC_PLACEHOLDER_03</WorkCenter>
+            <StandardWorkFormulaParamGroup StandardWorkFormulaParamGroupID="FORMULA_GROUP_PLACEHOLDER">
+                <WorkCenterFormulaParam1 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Fixed</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">0.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam1>
+                <WorkCenterFormulaParam2 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Variable</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">0.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam2>
+                <WorkCenterFormulaParam3 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">LabT Fixed</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">0.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam3>
+                <WorkCenterFormulaParam4 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">LabT Variable</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">0.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam4>
+                <WorkCenterFormulaParam5 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Fixed Setup</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">0.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam5>
+                <WorkCenterFormulaParam6 WorkCenterFormulaParamID="FORMULA_PARAM_PLACEHOLDER">
+                    <StandardWorkFormulaParamName languageCode="EN">ProcT Seq.Dep.Setup</StandardWorkFormulaParamName>
+                    <WorkCenterStandardWorkQty unitCode="H">0.0</WorkCenterStandardWorkQty>
+                </WorkCenterFormulaParam6>
+            </StandardWorkFormulaParamGroup>
+            <OperationReferenceQuantity unitCode="EA">1000.0</OperationReferenceQuantity>
+            <OpQtyToBaseQtyNmrtr>1</OpQtyToBaseQtyNmrtr>
+            <OpQtyToBaseQtyDnmntr>1</OpQtyToBaseQtyDnmntr>
+            <FactoryCalendar>FC_PLACEHOLDER</FactoryCalendar>
+            <ChangeNumber>ECN_PLACEHOLDER</ChangeNumber>
+            <ValidityStartDate>2020-01-01</ValidityStartDate>
+            <ValidityEndDate>9999-12-31</ValidityEndDate>
+            <n1:ControlRecipeDestination>CRD_PLACEHOLDER</n1:ControlRecipeDestination>
+            <n1:FieldKey>FIELD_KEY_PLACEHOLDER</n1:FieldKey>
+            <n1:UserField04>0.000</n1:UserField04>
+            <n1:UserField05>1.000</n1:UserField05>
+            <n1:UserField05Unit>PC</n1:UserField05Unit>
+            <n1:UserField07>0.000</n1:UserField07>
+            <n1:UserField06>0.000</n1:UserField06>
+            <n1:UserField08>00000000</n1:UserField08>
+            <n1:KeywordUser00>KEYWORD_PLACEHOLDER_01</n1:KeywordUser00>
+            <n1:KeywordUser01>KEYWORD_PLACEHOLDER_02</n1:KeywordUser01>
+            <n1:KeywordUser02>KEYWORD_PLACEHOLDER_03</n1:KeywordUser02>
+            <n1:KeywordUser03>KEYWORD_PLACEHOLDER_04</n1:KeywordUser03>
+            <n1:KeywordUser05>KEYWORD_PLACEHOLDER_05</n1:KeywordUser05>
+            <n1:KeywordUser10>KEYWORD_PLACEHOLDER_06</n1:KeywordUser10>
+        </BillOfOperationsActivityNetworkElementTimeSlice>
+    </n1:BillOfOperationsActivityNetworkElement>
+    <n1:BillOfOperationsActivityNetworkElement>
+        <BillOfOperationsNodeType>StartEvent</BillOfOperationsNodeType>
+        <BillOfOperationsNodeID>2BOO_GROUP_PLACEHOLDER01SEVT</BillOfOperationsNodeID>
+    </n1:BillOfOperationsActivityNetworkElement>
+    <n1:BillOfOperationsActivityNetworkElement>
+        <BillOfOperationsNodeType>EndEvent</BillOfOperationsNodeType>
+        <BillOfOperationsNodeID>2BOO_GROUP_PLACEHOLDER01EEVT</BillOfOperationsNodeID>
+    </n1:BillOfOperationsActivityNetworkElement>
+    <n1:BillOfOperationsRelationship>
+        <PredecessorBOONodeType>Operation</PredecessorBOONodeType>
+        <PredecessorBOONodeID>NODE_ID_PLACEHOLDER_01</PredecessorBOONodeID>
+        <SuccessorBOONodeType>Phase</SuccessorBOONodeType>
+        <SuccessorBOONodeID>NODE_ID_PLACEHOLDER_02</SuccessorBOONodeID>
+        <BOORelationshipType>PChild</BOORelationshipType>
+        <ValidityStartDate>2020-01-01</ValidityStartDate>
+        <ValidityEndDate>9999-12-31</ValidityEndDate>
+    </n1:BillOfOperationsRelationship>
+    <n1:BillOfOperationsRelationship>
+        <PredecessorBOONodeType>Operation</PredecessorBOONodeType>
+        <PredecessorBOONodeID>NODE_ID_PLACEHOLDER_03</PredecessorBOONodeID>
+        <SuccessorBOONodeType>Phase</SuccessorBOONodeType>
+        <SuccessorBOONodeID>NODE_ID_PLACEHOLDER_04</SuccessorBOONodeID>
+        <BOORelationshipType>PChild</BOORelationshipType>
+        <ValidityStartDate>2020-01-01</ValidityStartDate>
+        <ValidityEndDate>9999-12-31</ValidityEndDate>
+    </n1:BillOfOperationsRelationship>
+    <n1:BillOfOperationsRelationship>
+        <PredecessorBOONodeType>Operation</PredecessorBOONodeType>
+        <PredecessorBOONodeID>NODE_ID_PLACEHOLDER_05</PredecessorBOONodeID>
+        <SuccessorBOONodeType>Phase</SuccessorBOONodeType>
+        <SuccessorBOONodeID>NODE_ID_PLACEHOLDER_06</SuccessorBOONodeID>
+        <BOORelationshipType>PChild</BOORelationshipType>
+        <ValidityStartDate>2020-01-01</ValidityStartDate>
+        <ValidityEndDate>9999-12-31</ValidityEndDate>
+    </n1:BillOfOperationsRelationship>
+    <n1:BillOfOperationsRelationship>
+        <PredecessorBOONodeType>StartEvent</PredecessorBOONodeType>
+        <PredecessorBOONodeID>2BOO_GROUP_PLACEHOLDER01SEVT</PredecessorBOONodeID>
+        <SuccessorBOONodeType>Phase</SuccessorBOONodeType>
+        <SuccessorBOONodeID>NODE_ID_PLACEHOLDER_02</SuccessorBOONodeID>
+        <BOORelationshipType>SucRel</BOORelationshipType>
+        <ValidityStartDate>2020-01-01</ValidityStartDate>
+        <ValidityEndDate>9999-12-31</ValidityEndDate>
+    </n1:BillOfOperationsRelationship>
+    <n1:BillOfOperationsRelationship>
+        <PredecessorBOONodeType>StartEvent</PredecessorBOONodeType>
+        <PredecessorBOONodeID>2BOO_GROUP_PLACEHOLDER01SEVT</PredecessorBOONodeID>
+        <SuccessorBOONodeType>Phase</SuccessorBOONodeType>
+        <SuccessorBOONodeID>NODE_ID_PLACEHOLDER_04</SuccessorBOONodeID>
+        <BOORelationshipType>SucRel</BOORelationshipType>
+        <ValidityStartDate>2020-01-01</ValidityStartDate>
+        <ValidityEndDate>9999-12-31</ValidityEndDate>
+    </n1:BillOfOperationsRelationship>
+    <n1:BillOfOperationsRelationship>
+        <PredecessorBOONodeType>StartEvent</PredecessorBOONodeType>
+        <PredecessorBOONodeID>2BOO_GROUP_PLACEHOLDER01SEVT</PredecessorBOONodeID>
+        <SuccessorBOONodeType>Phase</SuccessorBOONodeType>
+        <SuccessorBOONodeID>NODE_ID_PLACEHOLDER_06</SuccessorBOONodeID>
+        <BOORelationshipType>SucRel</BOORelationshipType>
+        <ValidityStartDate>2020-01-01</ValidityStartDate>
+        <ValidityEndDate>9999-12-31</ValidityEndDate>
+    </n1:BillOfOperationsRelationship>
+    <n1:BillOfOperationsRelationship>
+        <PredecessorBOONodeType>Phase</PredecessorBOONodeType>
+        <PredecessorBOONodeID>NODE_ID_PLACEHOLDER_02</PredecessorBOONodeID>
+        <SuccessorBOONodeType>EndEvent</SuccessorBOONodeType>
+        <SuccessorBOONodeID>2BOO_GROUP_PLACEHOLDER01EEVT</SuccessorBOONodeID>
+        <BOORelationshipType>SucRel</BOORelationshipType>
+        <ValidityStartDate>2020-01-01</ValidityStartDate>
+        <ValidityEndDate>9999-12-31</ValidityEndDate>
+    </n1:BillOfOperationsRelationship>
+    <n1:BillOfOperationsRelationship>
+        <PredecessorBOONodeType>Phase</PredecessorBOONodeType>
+        <PredecessorBOONodeID>NODE_ID_PLACEHOLDER_04</PredecessorBOONodeID>
+        <SuccessorBOONodeType>EndEvent</SuccessorBOONodeType>
+        <SuccessorBOONodeID>2BOO_GROUP_PLACEHOLDER01EEVT</SuccessorBOONodeID>
+        <BOORelationshipType>SucRel</BOORelationshipType>
+        <ValidityStartDate>2020-01-01</ValidityStartDate>
+        <ValidityEndDate>9999-12-31</ValidityEndDate>
+    </n1:BillOfOperationsRelationship>
+    <n1:BillOfOperationsRelationship>
+        <PredecessorBOONodeType>Phase</PredecessorBOONodeType>
+        <PredecessorBOONodeID>NODE_ID_PLACEHOLDER_06</PredecessorBOONodeID>
+        <SuccessorBOONodeType>EndEvent</SuccessorBOONodeType>
+        <SuccessorBOONodeID>2BOO_GROUP_PLACEHOLDER01EEVT</SuccessorBOONodeID>
+        <BOORelationshipType>SucRel</BOORelationshipType>
+        <ValidityStartDate>2020-01-01</ValidityStartDate>
+        <ValidityEndDate>9999-12-31</ValidityEndDate>
+    </n1:BillOfOperationsRelationship>
+</n0:ManufacturingProdnVersInfo>

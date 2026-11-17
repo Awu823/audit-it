@@ -1,0 +1,58 @@
+<n0:ZBOMReplicateRequest xmlns:n0="http://aif.placeholder/bom"
+    xmlns:prx="urn:sap.com:proxy:SRC_SYS:/1SAI/PROXY_GEN_ID_PLACEHOLDER:758">
+    <n0:MessageHeader>
+        <n0:ID>PLACEHOLDER_GUID_32</n0:ID>
+        <n0:UUID>placeholder-guid-0001</n0:UUID>
+        <n0:CreationDateTime>2020-01-01T00:00:00Z</n0:CreationDateTime>
+        <n0:SenderBusinessSystemID>SRC_SYS_010</n0:SenderBusinessSystemID>
+        <n0:RecipientBusinessSystemID>TGT_SYS_LM</n0:RecipientBusinessSystemID>
+    </n0:MessageHeader>
+    <n0:BOM>
+        <n0:BOMHeader>
+            <n0:Material>MATNR_PLACEHOLDER_01</n0:Material>
+            <n0:Plant>DEFAULT_WERKS</n0:Plant>
+            <n0:BOMCategory>M</n0:BOMCategory>
+            <n0:BillOfMaterial>BOM_NO_PLACEHOLDER</n0:BillOfMaterial>
+            <n0:BillOfMaterialVariant>01</n0:BillOfMaterialVariant>
+            <n0:BillOfMaterialVariantUsage>1</n0:BillOfMaterialVariantUsage>
+            <n0:BOMHeaderQuantityInBaseUnit>1.0</n0:BOMHeaderQuantityInBaseUnit>
+            <n0:BOMHeaderBaseUnit>EA</n0:BOMHeaderBaseUnit>
+            <n0:BOMHeaderECN>ECN_PLACEHOLDER</n0:BOMHeaderECN>
+            <n0:BOMCreationDate>2020-01-01</n0:BOMCreationDate>
+            <n0:BOMValidityStartDate>2020-01-01</n0:BOMValidityStartDate>
+            <n0:BOMValidityEndDate>9999-12-31</n0:BOMValidityEndDate>
+        </n0:BOMHeader>
+        <n0:BOMComponent>
+            <n0:BillOfMaterialComponent>MATNR_PLACEHOLDER_02</n0:BillOfMaterialComponent>
+            <n0:BillOfMaterialItemQuantity unitCode="EA">1.0</n0:BillOfMaterialItemQuantity>
+            <n0:ValidityStartDate>2020-01-01</n0:ValidityStartDate>
+            <n0:ValidityEndDate>9999-12-31</n0:ValidityEndDate>
+            <n0:ComponentScrapInPercent> 0.00</n0:ComponentScrapInPercent>
+            <n0:OperationScrapInPercent> 0.00</n0:OperationScrapInPercent>
+        </n0:BOMComponent>
+        <n0:BOMComponent>
+            <n0:BillOfMaterialComponent>MATNR_PLACEHOLDER_03</n0:BillOfMaterialComponent>
+            <n0:BillOfMaterialItemQuantity unitCode="M">1.5</n0:BillOfMaterialItemQuantity>
+            <n0:ValidityStartDate>2020-01-01</n0:ValidityStartDate>
+            <n0:ValidityEndDate>9999-12-31</n0:ValidityEndDate>
+            <n0:ComponentScrapInPercent> 0.00</n0:ComponentScrapInPercent>
+            <n0:OperationScrapInPercent> 0.00</n0:OperationScrapInPercent>
+        </n0:BOMComponent>
+        <n0:BOMComponent>
+            <n0:BillOfMaterialComponent>MATNR_PLACEHOLDER_03</n0:BillOfMaterialComponent>
+            <n0:BillOfMaterialItemQuantity unitCode="M">1.5</n0:BillOfMaterialItemQuantity>
+            <n0:ValidityStartDate>2020-01-01</n0:ValidityStartDate>
+            <n0:ValidityEndDate>9999-12-31</n0:ValidityEndDate>
+            <n0:ComponentScrapInPercent> 0.00</n0:ComponentScrapInPercent>
+            <n0:OperationScrapInPercent> 0.00</n0:OperationScrapInPercent>
+        </n0:BOMComponent>
+        <n0:BOMComponent>
+            <n0:BillOfMaterialComponent>MATNR_PLACEHOLDER_04</n0:BillOfMaterialComponent>
+            <n0:BillOfMaterialItemQuantity unitCode="M">0.45</n0:BillOfMaterialItemQuantity>
+            <n0:ValidityStartDate>2020-01-01</n0:ValidityStartDate>
+            <n0:ValidityEndDate>9999-12-31</n0:ValidityEndDate>
+            <n0:ComponentScrapInPercent> 0.00</n0:ComponentScrapInPercent>
+            <n0:OperationScrapInPercent> 0.00</n0:OperationScrapInPercent>
+        </n0:BOMComponent>
+    </n0:BOM>
+</n0:ZBOMReplicateRequest>
