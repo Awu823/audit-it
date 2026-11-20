@@ -1,0 +1,88 @@
+# DRF BOM 出站（S4H → ECMS）— BOM_S4 New
+
+本目录是 **DRF（Data Replication Framework）出站实现**：把 SAP S4HANA 的 BOM
+主数据经 **AIF** 出站服务推送到外部系统（ECMS / MuleSoft）。对应 FS：
+`FS_CN_MA_Production BOM Interface From S4H To ECMS_dev_keyinfo.md`，
+需求描述：`BOM需求自然语言描述.md`。
+
+## 分层架构
+
+```
+DRF 框架
+   │  if_drf_outbound（生命周期回调）
+   ▼
+zcl_m1t_dcn_bom_out            （框架适配层：只做接口适配，无业务逻辑）
+   │  委托
+   ▼
+zcl_m1t_dcn_bom_change*        （业务单例：取数 + 映射 + 委托发送 + 状态定标）
+   │  委托
+   ▼
+zcl_aif_outbound_util          （通用 AIF 出站工具：封装 /AIF/SEND_WITH_PROXY 等）
+   │
+   ▼
+AIF 引擎 → 逻辑端口 → 外部系统
+```
+
+- **业务类不直接调用 AIF 引擎 FM**：统一经 `zcl_aif_outbound_util`（通用、接口无关）与 AIF 交互。
+- 与 `zreport_aif_bom_out_test` 目录的独立触发包共用同一 util，行为一致。
+
+## 目录文件
+
+| 文件 | 类名 | 角色 |
+|------|------|------|
+| `zcl_m1t_dcn_bom_out.abap` | `ZCL_M1T_DCN_BOM_OUT` | **框架适配层**：实现 `if_drf_outbound`，把 9 个生命周期方法委托给业务单例；`initialize` 创建业务单例并注入 `runtime_parameter_ext`。 |
+| `zcl_m1t_dcn_bom_change.abap` | `zcl_m1t_dcn_bom_change` | **主业务单例**（中文注释）：取数/映射/发送/定标。 |
+| `zcl_m1t_dcn_bom_change_en.abap` | `zcl_m1t_dcn_bom_change` | **英文注释镜像**：与主变体**同一类名**（互斥，同系统只能激活其一），逻辑等价，仅注释语言不同。 |
+| `zcl_m1t_dcn_bom_change_new_wsdl.abap` | `zcl_m1t_dcn_bom_out_impl` | **ZBOM 变体**（独立类）：不同 AIF 接口/消息类型，单条发送。 |
+| `zcl_m1t_dcn_bom_change_test.abap` | `zcl_m1t_dcn_bom_change_test` | **单元测试**（`FOR TESTING`）：覆盖 analyze/enrich/read/map/send/finalize。 |
+| `zcl_mit_dcn_drf_bom_out_fltr_en.abap` | `zcl_mit_dcn_drf_bom_out_fltr` | **对象级 filter**：过滤条件（工厂/用量）+ 预查 `STLNR`，仅用 bal 日志。 |
+| `ManufacturingProdnVersInfo_Out.WSDL` | — | 出站 WSDL（主变体接口的 proxy 定义）。 |
+
+## 业务单例变体对比
+
+| 变体 | 类名 | AIF 接口（ns/ifname/ver/port） | 消息类型 |
+|------|------|-------------------------------|---------|
+| `zcl_m1t_dcn_bom_change`（主/`_en`） | `zcl_m1t_dcn_bom_change` | `YPMES` / `YOMES_PV` / `1` / `YMESPVOUT` | `ppint_mfg_prodn_vers_inf`（AIF 标准） |
+| `zcl_m1t_dcn_bom_change_new_wsdl` | `zcl_m1t_dcn_bom_out_impl` | `ZDEMO` / `ZDEMOIF` / `1` / `ZBOMOUT` | `zzbomreplicate_request`（DDIC proxy） |
+
+> 注：主/`_en` 两文件**同一类名** `zcl_m1t_dcn_bom_change`——是同一类的两种注释语言版本，
+> 部署时**二选一**（`_en` 仅英文注释，逻辑与主变体等价）。
+> 二者异常日志常量名略异（`gc_matgrp_service` vs `gc_aif_service`），但**值相同**
+> （`ManufacturingProdnVersInfo_Out`），无行为差异。
+
+## AIF 委托与错误粒度（业务单例 `send_message`）
+
+- 经 `get_aif_util( )` 懒加载 `zcl_aif_outbound_util`（本地私有，非跨对象泄漏）。
+- `lo_aif_util->send_with_proxy( iv_persist_xml = abap_true CHANGING cs_message = ... )`。
+- 发送后按 **`is_hard_error( )`** 分支：
+  - **硬错误**（原始 `sy-subrc` 非 0/1）→ `bal->add_msg`(error) 携带
+    `get_error_string( )` / `get_error_long( )`，跳过 `add_msg_xi`。
+  - **成功/业务容忍**（`sy-subrc` = 0/1，含 `persistency_error`）→ `bal->add_msg_xi`
+    关联 GUID + 载荷。
+- 结果定标：`lv_sent_ok` 为真 → 对象 `'SN'`（Sent/No error）+ 成功日志；
+  为假（硬/业务错误）→ 对象 `'SE'`（Sent with error）。
+- 异常兜底：`CATCH cx_bs_soa_exception` / `cx_ai_system_fault` → `'SE'` +
+  `MESSAGE s015(drf_outbound)` + `add_msg_re`。
+- `finalize`：无错误对象且非重复初始加载时删除变更指针，否则保留；写成功数日志。
+
+## 单元测试覆盖（zcl_m1t_dcn_bom_change_test）
+
+| 测试 | 覆盖 |
+|------|------|
+| `test_finalize_delete` / `test_finalize_keep` | `finalize` 变更指针删除/保留分支 |
+| `test_enrich_defaults` / `test_enrich_keep_interface` | `enrich_filter_criteria` 默认补齐/保留界面条件 |
+| `test_analyze_by_others` / `test_analyze_by_cp_offset` | 变更分析（ECN 过滤 / 变更指针偏移解析） |
+| `test_read_complete_data_dedup` / `_prefetched` | `read_complete_data` 去重（STKO/STPO 不放大）/ Path A（对象键带 `stlnr`） |
+| `test_map_items_no_cross_alternative` | `map_data2message` 备选收敛（STAS 节点区分，不混入另一备选） |
+| `test_send_message_missing_header` | `send_message` Header 必填早退分支（标 `SE` + 1 条消息，不触发 AIF） |
+
+> 测试经 `FRIENDS` 访问私有内部缓冲（`bom_message`/`mast_list`/`stko_list`/`stpo_list`）
+> 直接断言去重/映射结果；`send_message` 早退测试位于 AIF 调用之前，无需 mock FM。
+
+## 关键前置条件（目标系统）
+
+- `/AIF/CUST` 登记出站接口（主变体 `YPMES/YOMES_PV/1`；ZBOM 变体 `ZDEMO/ZDEMOIF/1`）。
+- 消息 DDIC 结构已激活（`ppint_mfg_prodn_vers_inf` / `zzbomreplicate_request`）。
+- 逻辑端口已配置（主变体 `YMESPVOUT`；ZBOM 变体 `ZBOMOUT`）。
+- 业务系统已登记（`LCR_GET_OWN_BUSINESS_SYSTEM`）。
+- DRF 自定义（对象键表 `key_table_ty`、消息类 `ZDCN_PBOM` 等）已配置。
