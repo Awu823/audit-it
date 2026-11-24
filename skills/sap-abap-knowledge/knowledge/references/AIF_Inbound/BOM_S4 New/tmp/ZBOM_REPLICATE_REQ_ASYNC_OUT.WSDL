@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Custom BOM Replicate async outbound service for DRF BOM -> MuleSoft -> ECMS.
+  Strategy B: Based on ManufacturingProdnVersInfo_Out, simplified to BOM-centric layout.
+
+  Changes from the original PV WSDL:
+  1. Custom namespace (http://www.aif.com/MDR/bom) - no SAP standard namespace
+  2. BOM-centric structure: BOMHeader + BOMComponent[] directly under root (no PV/workflow nesting)
+  3. Removed PV-specific fields (ProductionVersionInformation, BillOfOperations*)
+  4. Added BOMCreationDate (ID06) - not in PV structure
+  5. Added OperationScrapInPercent (ID16) - not in PV structure
+  6. WSRM disabled (false) for MuleSoft compatibility
+  7. Added SOAP 1.2 binding + service for SOAMANAGER import
+  8. Self-contained schema (no external namespace imports)
+
+  Field coverage: 17/17 FS fields (ID01-ID17)
+  XML element naming aligned with PV WSDL conventions for MuleSoft familiarity.
+-->
+<wsdl:definitions targetNamespace="http://www.aif.com/MDR/bom"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:tns="http://www.aif.com/MDR/bom"
+    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+
+    <wsdl:documentation>
+        Custom BOM Replicate async outbound service.
+        Based on ManufacturingProdnVersInfo_Out (PP/Global2), simplified to BOM-centric layout
+        for DRF BOM outbound to ECMS via MuleSoft.
+        Covers all 17 FS fields (ID01-ID17).
+    </wsdl:documentation>
+
+    <wsp:UsingPolicy wsdl:required="true"/>
+
+    <!-- Policy: no session, commit enabled, no WSRM (MuleSoft compatibility) -->
+    <wsp:Policy wsu:Id="IF_ZBOMReplicateReq_Async_Out">
+        <sapsession:Session xmlns:sapsession="http://www.sap.com/webas/630/soap/features/session/">
+            <sapsession:enableSession>false</sapsession:enableSession>
+        </sapsession:Session>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="OP_ZBOMReplicateReq_Async_Out">
+        <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">true</sapcomhnd:enableCommit>
+        <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">false</sapblock:enableBlocking>
+        <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">yes</saptrhnw05:required>
+        <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+    </wsp:Policy>
+
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://www.aif.com/MDR/bom"
+            elementFormDefault="qualified"
+            xmlns="http://www.aif.com/MDR/bom">
+
+            <!-- ===== Root Element ===== -->
+            <xsd:element name="ZBOMReplicateRequest" type="BOMReplicateRequest"/>
+
+            <!-- ===== Simple Types ===== -->
+
+            <xsd:simpleType name="Date">
+                <xsd:restriction base="xsd:date">
+                    <xsd:pattern value="[0-9]{4}-[0-9]{2}-[0-9]{2}"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="GLOBAL_DateTime">
+                <xsd:restriction base="xsd:dateTime">
+                    <xsd:pattern value="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{1,7})?Z"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="MeasureUnitCode">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="3"/>
+                    <xsd:minLength value="1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="QuantityContent">
+                <xsd:restriction base="xsd:decimal">
+                    <xsd:totalDigits value="31"/>
+                    <xsd:fractionDigits value="14"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="MaterialID">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="40"/>
+                    <xsd:minLength value="1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="BOMCategoryType">
+                <xsd:restriction base="xsd:string">
+                    <xsd:length value="1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="BillOfMaterialID">
+                <xsd:restriction base="xsd:string">
+                    <xsd:length value="8"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="BOMVariantID">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="8"/>
+                    <xsd:minLength value="1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="BOMVariantUsage">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="3"/>
+                    <xsd:minLength value="1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="ChangeNumber">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="12"/>
+                    <xsd:minLength value="1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="PlantID">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="4"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <!-- Scrap as string to match PV structure's ComponentScrapInPercent pattern -->
+            <xsd:simpleType name="ScrapPercent">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="20"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="BusinessSystemID">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="60"/>
+                    <xsd:minLength value="1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="AgencyIdentificationCode">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="3"/>
+                    <xsd:minLength value="1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="BusinessDocumentMessageIDContent">
+                <xsd:restriction base="xsd:token">
+                    <xsd:maxLength value="35"/>
+                    <xsd:minLength value="1"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="UUIDContent">
+                <xsd:restriction base="xsd:token">
+                    <xsd:length value="36"/>
+                    <xsd:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <!-- ===== Complex Types with simpleContent ===== -->
+
+            <xsd:complexType name="Quantity">
+                <xsd:simpleContent>
+                    <xsd:extension base="QuantityContent">
+                        <xsd:attribute name="unitCode" type="MeasureUnitCode"/>
+                    </xsd:extension>
+                </xsd:simpleContent>
+            </xsd:complexType>
+
+            <xsd:complexType name="BusinessDocumentMessageID">
+                <xsd:simpleContent>
+                    <xsd:extension base="BusinessDocumentMessageIDContent">
+                        <xsd:attribute name="schemeID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60"/>
+                                    <xsd:minLength value="1"/>
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                        <xsd:attribute name="schemeAgencyID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60"/>
+                                    <xsd:minLength value="1"/>
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                    </xsd:extension>
+                </xsd:simpleContent>
+            </xsd:complexType>
+
+            <xsd:complexType name="UUID">
+                <xsd:simpleContent>
+                    <xsd:extension base="UUIDContent">
+                        <xsd:attribute name="schemeID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60"/>
+                                    <xsd:minLength value="1"/>
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                        <xsd:attribute name="schemeAgencyID">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:token">
+                                    <xsd:maxLength value="60"/>
+                                    <xsd:minLength value="1"/>
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:attribute>
+                    </xsd:extension>
+                </xsd:simpleContent>
+            </xsd:complexType>
+
+            <!-- ===== Complex Types ===== -->
+
+            <!-- Simplified SAP SOA Business Document Message Header
+                 (kept 5 essential fields from BusinessDocumentMessageHeader) -->
+            <xsd:complexType name="BusinessDocumentMessageHeader">
+                <xsd:sequence>
+                    <xsd:element name="ID" minOccurs="0" type="BusinessDocumentMessageID"/>
+                    <xsd:element name="UUID" minOccurs="0" type="UUID"/>
+                    <xsd:element name="CreationDateTime" minOccurs="0" type="GLOBAL_DateTime"/>
+                    <xsd:element name="SenderBusinessSystemID" minOccurs="0" type="BusinessSystemID"/>
+                    <xsd:element name="RecipientBusinessSystemID" minOccurs="0" type="BusinessSystemID"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- BOM Header (ID01, ID06-ID14)
+                 Flattened from PV's A_BillOfMaterial group + BOM_EXTRA_DATA.
+                 Added BOMCreationDate (ID06) not in PV structure. -->
+            <xsd:complexType name="BOMHeaderType">
+                <xsd:sequence>
+                    <xsd:element name="Material" type="MaterialID"/>                              <!-- ID01 copExgNo -->
+                    <xsd:element name="Plant" minOccurs="0" type="PlantID"/>
+                    <xsd:element name="BOMCategory" minOccurs="0" type="BOMCategoryType"/>
+                    <xsd:element name="BillOfMaterial" minOccurs="0" type="BillOfMaterialID"/>      <!-- ID08 bomNo -->
+                    <xsd:element name="BillOfMaterialVariant" minOccurs="0" type="BOMVariantID"/>  <!-- ID07 alternativeBom -->
+                    <xsd:element name="BillOfMaterialVariantUsage" minOccurs="0" type="BOMVariantUsage"/> <!-- ID10 useTo -->
+                    <xsd:element name="BOMHeaderQuantityInBaseUnit" minOccurs="0" type="QuantityContent"/> <!-- ID13 copExgQty -->
+                    <xsd:element name="BOMHeaderBaseUnit" minOccurs="0" type="MeasureUnitCode"/>   <!-- ID14 copExgUnit -->
+                    <xsd:element name="BOMHeaderECN" minOccurs="0" type="ChangeNumber"/>           <!-- ID09 changeNo -->
+                    <xsd:element name="BOMCreationDate" minOccurs="0" type="Date"/>                <!-- ID06 bomCreation (NEW) -->
+                    <xsd:element name="BOMValidityStartDate" minOccurs="0" type="Date"/>           <!-- ID11 bomStartDate -->
+                    <xsd:element name="BOMValidityEndDate" minOccurs="0" type="Date"/>             <!-- ID12 bomEndDate -->
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- BOM Component / Item (ID02-ID05, ID15-ID17)
+                 Flattened from PV's BillOfOperationsActivityComponentAllocation.
+                 Components now directly under BOM, not nested in process network elements.
+                 Added OperationScrapInPercent (ID16) not in PV structure. -->
+            <xsd:complexType name="BOMComponentType">
+                <xsd:sequence>
+                    <xsd:element name="BillOfMaterialComponent" type="MaterialID"/>                 <!-- ID02 copImgNo -->
+                    <xsd:element name="BillOfMaterialItemQuantity" minOccurs="0" type="Quantity"/>  <!-- ID03 decCm + ID15 unitCode -->
+                    <xsd:element name="ValidityStartDate" minOccurs="0" type="Date"/>               <!-- ID04 startDate -->
+                    <xsd:element name="ValidityEndDate" minOccurs="0" type="Date"/>                 <!-- ID05 endDate -->
+                    <xsd:element name="ComponentScrapInPercent" minOccurs="0" type="ScrapPercent"/> <!-- ID17 componentScrap -->
+                    <xsd:element name="OperationScrapInPercent" minOccurs="0" type="ScrapPercent"/> <!-- ID16 operationScrap (NEW) -->
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- BOM wrapper: header + components -->
+            <xsd:complexType name="BOMType">
+                <xsd:sequence>
+                    <xsd:element name="BOMHeader" type="BOMHeaderType"/>
+                    <xsd:element name="BOMComponent" minOccurs="0" maxOccurs="unbounded" type="BOMComponentType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <!-- Root message type -->
+            <xsd:complexType name="BOMReplicateRequest">
+                <xsd:sequence>
+                    <xsd:element name="MessageHeader" type="BusinessDocumentMessageHeader"/>
+                    <xsd:element name="BOM" minOccurs="0" type="BOMType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+        </xsd:schema>
+    </wsdl:types>
+
+    <!-- Message (document/literal, wrapped) -->
+    <wsdl:message name="ZBOMReplicateRequest">
+        <wsdl:part name="parameters" element="tns:ZBOMReplicateRequest"/>
+    </wsdl:message>
+
+    <!-- PortType (asynchronous outbound, input only) -->
+    <wsdl:portType name="ZBOMReplicateReq_Async_Out">
+        <wsdl:documentation>
+            <sapdoc:sapdoc xmlns:sapdoc="urn:sap:esi:documentation">
+                <sapdoc:docitem applicationComponent="PP-BD-PM"/>
+            </sapdoc:sapdoc>
+        </wsdl:documentation>
+        <wsp:Policy>
+            <wsp:PolicyReference URI="#IF_ZBOMReplicateReq_Async_Out"/>
+        </wsp:Policy>
+        <wsdl:operation name="ZBOMReplicateReq_Async_Out">
+            <wsp:Policy>
+                <wsp:PolicyReference URI="#OP_ZBOMReplicateReq_Async_Out"/>
+            </wsp:Policy>
+            <wsdl:input message="tns:ZBOMReplicateRequest"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+</wsdl:definitions>

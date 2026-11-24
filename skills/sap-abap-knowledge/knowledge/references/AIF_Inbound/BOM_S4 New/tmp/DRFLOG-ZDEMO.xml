@@ -1,0 +1,58 @@
+<n0:ZBOMReplicateRequest xmlns:n0="http://www.aif.com/MDR/bom"
+    xmlns:prx="urn:sap.com:proxy:B1S:/1SAI/TASF865F393D27A647D995C:758">
+    <n0:MessageHeader>
+        <n0:ID>2FBECDB9AE091FD1B8B2FE2582EF28E4</n0:ID>
+        <n0:UUID>2fbecdb9-ae09-1fd1-b8b2-fe2582ef28e4</n0:UUID>
+        <n0:CreationDateTime>2026-11-16T08:30:13Z</n0:CreationDateTime>
+        <n0:SenderBusinessSystemID>B1SCLNT010</n0:SenderBusinessSystemID>
+        <n0:RecipientBusinessSystemID>MES_BS_IMP_LM</n0:RecipientBusinessSystemID>
+    </n0:MessageHeader>
+    <n0:BOM>
+        <n0:BOMHeader>
+            <n0:Material>10113730</n0:Material>
+            <n0:Plant>Q511</n0:Plant>
+            <n0:BOMCategory>M</n0:BOMCategory>
+            <n0:BillOfMaterial>00051772</n0:BillOfMaterial>
+            <n0:BillOfMaterialVariant>01</n0:BillOfMaterialVariant>
+            <n0:BillOfMaterialVariantUsage>1</n0:BillOfMaterialVariantUsage>
+            <n0:BOMHeaderQuantityInBaseUnit>1.0</n0:BOMHeaderQuantityInBaseUnit>
+            <n0:BOMHeaderBaseUnit>EA</n0:BOMHeaderBaseUnit>
+            <n0:BOMHeaderECN>500000009031</n0:BOMHeaderECN>
+            <n0:BOMCreationDate>2025-10-27</n0:BOMCreationDate>
+            <n0:BOMValidityStartDate>2025-10-27</n0:BOMValidityStartDate>
+            <n0:BOMValidityEndDate>9999-12-31</n0:BOMValidityEndDate>
+        </n0:BOMHeader>
+        <n0:BOMComponent>
+            <n0:BillOfMaterialComponent>10084160</n0:BillOfMaterialComponent>
+            <n0:BillOfMaterialItemQuantity unitCode="EA">1.0</n0:BillOfMaterialItemQuantity>
+            <n0:ValidityStartDate>2025-10-27</n0:ValidityStartDate>
+            <n0:ValidityEndDate>9999-12-31</n0:ValidityEndDate>
+            <n0:ComponentScrapInPercent> 0.00</n0:ComponentScrapInPercent>
+            <n0:OperationScrapInPercent> 0.00</n0:OperationScrapInPercent>
+        </n0:BOMComponent>
+        <n0:BOMComponent>
+            <n0:BillOfMaterialComponent>12048006</n0:BillOfMaterialComponent>
+            <n0:BillOfMaterialItemQuantity unitCode="M">1.5</n0:BillOfMaterialItemQuantity>
+            <n0:ValidityStartDate>2025-10-27</n0:ValidityStartDate>
+            <n0:ValidityEndDate>9999-12-31</n0:ValidityEndDate>
+            <n0:ComponentScrapInPercent> 0.00</n0:ComponentScrapInPercent>
+            <n0:OperationScrapInPercent> 0.00</n0:OperationScrapInPercent>
+        </n0:BOMComponent>
+        <n0:BOMComponent>
+            <n0:BillOfMaterialComponent>12048006</n0:BillOfMaterialComponent>
+            <n0:BillOfMaterialItemQuantity unitCode="M">1.5</n0:BillOfMaterialItemQuantity>
+            <n0:ValidityStartDate>2025-10-27</n0:ValidityStartDate>
+            <n0:ValidityEndDate>9999-12-31</n0:ValidityEndDate>
+            <n0:ComponentScrapInPercent> 0.00</n0:ComponentScrapInPercent>
+            <n0:OperationScrapInPercent> 0.00</n0:OperationScrapInPercent>
+        </n0:BOMComponent>
+        <n0:BOMComponent>
+            <n0:BillOfMaterialComponent>12048007</n0:BillOfMaterialComponent>
+            <n0:BillOfMaterialItemQuantity unitCode="M">0.45</n0:BillOfMaterialItemQuantity>
+            <n0:ValidityStartDate>2025-10-27</n0:ValidityStartDate>
+            <n0:ValidityEndDate>9999-12-31</n0:ValidityEndDate>
+            <n0:ComponentScrapInPercent> 0.00</n0:ComponentScrapInPercent>
+            <n0:OperationScrapInPercent> 0.00</n0:OperationScrapInPercent>
+        </n0:BOMComponent>
+    </n0:BOM>
+</n0:ZBOMReplicateRequest>
